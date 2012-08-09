@@ -1,0 +1,112 @@
+map,x,y,d	script	Recompensas	987,{
+	// NPC Settings - SET THESE BEFORE LOADING THE SCRIPT!
+	set $servername$,"FluxRO";
+	set $npcname$,"[Recompensador]"; // NPC Name to display during chat. Default: "[Item Redeemer]"
+	set $redeemtable$,"cp_redeemlog"; // Default: "cp_redeemlog"
+	set $showcredits,1; // Display Credits to FluxCP Creators? 0 = Disable. 1 = Enable. Default: 1
+	// End NPC Settings.
+
+	// Server Settings
+	// DON'T CHANGE THIS UNLESS YOU KNOW WHAT YOU'RE DOING AND HAVE MADE THE APPROPRIATE SOURCE MODS!
+	set $maxinventorysize,100; // Max amount of unique items able to be held in inventory.
+	set $maxquantity,30000; // Max amount of an item able to be held in inventory.
+	// End Server Settings.
+
+	// Begin NPC
+	mes $npcname$;
+	if (Sex)
+		mes "Olá senhor!";
+	else
+		mes "Olá madame!";
+	mes "Como eu posso lhe ajudar hoje?";
+	next;
+	switch(select("Eu gostaria de pegar itens:Quem é você?:Estou apenas passeando")) {
+		case 1:
+			mes $npcname$;
+			deletearray @inventorylist_id;
+			deletearray @inventorylist_amount;
+			set @inventorylist_count,0;
+			getinventorylist;
+			if (@inventorylist_count < $maxinventorysize) {
+				query_sql "SELECT `id`, `nameid`, `quantity`  FROM `"+escape_sql($redeemtable$)+"` WHERE `account_id` = '"+escape_sql(getcharid(3))+"' AND `redeemed` = '0' LIMIT 128",.@id,.@nameid,.@quantity;
+				mes "Itens de recompensa pendentes: "+getarraysize(.@id);
+				if (getarraysize(.@id) > 0) {
+					for( set .@loop, 0; .@loop < getarraysize(.@id); set .@loop,.@loop+1) {
+						deletearray @inventorylist_id;
+						deletearray @inventorylist_amount;
+						set @inventorylist_count,0;
+						getinventorylist;
+						if (@inventorylist_count < $maxinventorysize) {
+							for( set .@loop_inner,0; .@loop_inner < @inventorylist_count; set .@loop_inner,.@loop_inner+1) {
+								deletearray @inventorylist_id;
+								deletearray @inventorylist_amount;
+								set @inventorylist_count,0;
+								getinventorylist;
+								if (@inventorylist_id[.@loop_inner] == .@nameid[.@loop]) {
+									if (@inventorylist_amount[.@loop_inner]+.@quantity[.@loop] > $maxquantity) {
+										mes "Mil perdões, mas você não pode carregar mais que "+$maxquantity+" of "+getitemname(.@nameid[.@loop])+" de uma vez!";
+										mes "Volte quando você estiver carregando menos desse item.";
+										if ($showcredits) callfunc "F_FluxCredits";
+										close;
+									} else if (checkweight(.@nameid[.@loop],.@quantity[.@loop]) == 0) {
+										mes "Perdão, mas você não está muito pesado para pegar suas recompensas.";
+										mes "Volte mais tarde quando você estiver menos pesado.";
+										if ($showcredits) callfunc "F_FluxCredits";
+										close;
+									}
+								}
+							}
+							query_sql "UPDATE `"+escape_sql($redeemtable$)+"` SET `char_id` = '"+escape_sql(getcharid(0))+"', `redeemed` = '1', `redemption_date` = NOW() WHERE `id` = '"+escape_sql(.@id[.@loop])+"'";
+							getitem .@nameid[.@loop],.@quantity[.@loop];
+							mes .@quantity[.@loop]+"x "+getitemname(.@nameid[.@loop]);
+						} else {
+							mes "Desculpas, mas você não pode ter mais que "+$maxinventorysize+" itens no seu inventário.";
+							mes "Volte quando você estiver com menos itens.";
+							if ($showcredits) callfunc "F_FluxCredits";
+							close;
+						}
+					}
+					if (Sex)
+						mes "Obrigado pelo seu patrocínio senhor!!";
+					else
+						mes "Obrigado pelo seu patrocínio madame.";
+					mes "Divirta-se em nosso server, "+$servername$+".";
+					if ($showcredits) callfunc "F_FluxCredits";
+					close;
+				} else {
+					mes "Meus registros indicam que não há recompensas esperando por você.";
+					mes "Desculpas.";
+					if ($showcredits) callfunc "F_FluxCredits";
+					close;
+				}
+			} else {
+				mes "Desculpas, mas você não pode ter mais que  "+$maxinventorysize+" itens no seu inventário.";
+				mes "Volte quando você estiver com menos itens.";
+				if ($showcredits) callfunc "F_FluxCredits";
+				close;
+			}
+			close;
+		case 2:
+			mes $npcname$;
+			mes "Eu estou aqui para você poder lhe ajudar a escolhe sua recompensa por ajuda o  "+$servername$;
+			mes "As doações podem ser feitas pelo Painel de Controle.";
+			if ($showcredits) callfunc "F_FluxCredits";
+			close;
+		case 3:
+			mes $npcname$;
+			mes "Ok então.";
+			mes "Ótimo dia para você.";
+			if ($showcredits) callfunc "F_FluxCredits";
+			close;
+	}
+}
+
+// Credit Displaying Function
+// Please do not modify or delete this function or its contents.
+// To disable the credits from being shown, please set $showcredits to 0 in the NPC Settings at the top of this file.
+function	script	F_FluxCredits	{
+	mes "-----------------------------------";
+	mes "Powered by Flux Control Panel.";
+	mes "Todos Os Direitos Reservados © 2008 Matthew Harris e Nikunj Mehta.";
+	close;
+}
