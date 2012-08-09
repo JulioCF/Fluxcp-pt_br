@@ -1,53 +1,53 @@
 <?php
 return array(
-	// Example server configuration. You may have more arrays like this one to
-	// specify multiple server groups (however they should share the same login
-	// server whilst they are allowed to have multiple char/map pairs).
+	// Exemplo de configuração do servidor. Você pode ter mais arrays como este para
+	// especificarem vários grupos de servidores (no entanto eles devem compartilhar o mesmo login
+	// servidor enquanto eles estão autorizados a ter vários pares de char/mapa).
 	array(
 		'ServerName'     => 'Ragnarok',
-		// Global database configuration (excludes logs database configuration).
+		// Global configuração de banco de dados (exclui a configuração de banco de dados de logs).
 		'DbConfig'       => array(
 			//'Socket'     => '/tmp/mysql.sock',
 			//'Port'       => 3306,
-			'Encoding'   => 'utf8', // Connection encoding -- use whatever here your MySQL tables collation is.
+			'Encoding'   => 'utf8', // Conexão codificada - use tudo o que aqui é o agrupamento de tabelas do MySQL
 			//'Convert'    => 'utf8',
-				// -- 'Convert' option only works when 'Encoding' option is specified and iconv (http://php.net/iconv) is available.
-				// -- It specifies the encoding to convert your MySQL data to on the website (most likely needs to be utf8)
+				// --'Converter' opção apenas funciona quando o 'Encoding' opção é especificada e iconv (http://php.net/iconv) está disponível.
+				// --Especifica a codificação para converter seus dados do MySQL para o site (provavelmente deve ser utf8)
 			'Hostname'   => '127.0.0.1',
 			'Username'   => 'ragnarok',
 			'Password'   => 'ragnarok',
 			'Database'   => 'ragnarok',
 			'Persistent' => true,
-			'Timezone'   => null // Example: '+0:00' is UTC.
-			// The possible values of 'Timezone' is as documented from the MySQL website:
-			// "The value can be given as a string indicating an offset from UTC, such as '+10:00' or '-6:00'."
-			// "The value can be given as a named time zone, such as 'Europe/Helsinki', 'US/Eastern', or 'MET'." (see below continuation!)
-			// **"Named time zones can be used only if the time zone information tables in the mysql database have been created and populated."
+			'Timezone'   => 'America/Sao_Paulo' // Exemplo: ' + 0:00 ' é UTC.
+			// Os valores possíveis de 'Timezone' é como documentado no site do MySQL:
+			// "O valor pode ser dado como uma seqüência de caracteres indicando um deslocamento de UTC, como ' + 10:00 ' ou ' -6:00 '."
+			// "O valor pode ser dado como uma zona de tempo nomeada, como 'Europe/Helsinki', ' US / Eastern', ou 'MET'." (veja abaixo a continuação!)
+			// ** "Fusos nomeados pode ser usados somente se foram criadas e preenchidas as tabelas de informações de fuso horário do banco de dados mysql".
 		),
-		// This is kept separate because many people choose to have their logs
-		// database accessible under different credentials, and often on a
-		// different server entirely to ensure the reliability of the log data.
+		// Este é mantido separado porque muitas pessoas optam por ter seus logs
+		// banco de dados acessível com credenciais diferentes e muitas vezes a um
+		// diferente servidor inteiramente para garantir a confiabilidade dos dados de log.
 		'LogsDbConfig'   => array(
 			//'Socket'     => '/tmp/mysql.sock',
 			//'Port'       => 3306,
-			'Encoding'   => null, // Connection encoding -- use whatever here your MySQL tables collation is.
-			//'Convert'    => 'utf8',
-				// -- 'Convert' option only works when 'Encoding' option is specified and iconv (http://php.net/iconv) is available.
-				// -- It specifies the encoding to convert your MySQL data to on the website (most likely needs to be utf8)
+			//'Encoding'   => null, // Conexão codificada - use tudo o que aqui é o agrupamento de tabelas do MySQL.
+			'Convert'    => 'utf8',
+				// --'Converter' opção apenas funciona quando o 'Encoding' opção é especificada e iconv (http://php.net/iconv) está disponível.
+				// --Especifica a codificação para converter seus dados do MySQL para o site (provavelmente deve ser utf8)
 			'Hostname'   => '127.0.0.1',
 			'Username'   => 'ragnarok',
 			'Password'   => 'ragnarok',
 			'Database'   => 'log',
 			'Persistent' => true,
-			'Timezone'   => null // Possible values is as described in the comment in DbConfig.
+			'Timezone'   => null // Valores possíveis é descrito no comentário em DbConfig.
 		),
-		// Login server configuration.
+		// Configuração de servidor de logon.
 		'LoginServer'    => array(
 			'Address'  => '127.0.0.1',
 			'Port'     => 6900,
 			'UseMD5'   => false,
-			'NoCase'   => true, // eA account case-sensitivity; Default: Case-INsensitive (true).
-			'Level'    => 0,    // Default account level during registration.
+			'NoCase'   => true, // eA conta diferenciar maiúsculas de minúsculas; Padrão: Maiúsculas e minúsculas (true).
+			'Level'    => 0,    // Padrão nível de conta durante o registo.
 			//'Database' => 'ragnarok'
 		),
 		'CharMapServers' => array(
@@ -60,9 +60,9 @@ return array(
 				'MvpDropRates'  => 25,
 				'CardDropRates' => 25,
 				'MaxCharSlots'  => 9,
-				'DateTimezone'  => 'America/Los_Angeles',       // Specifies game server's timezone for this char/map pair. (See: http://php.net/timezones)
-				//'ResetDenyMaps' => 'sec_pri',  // Defaults to 'sec_pri'. This value can be an array of map names.
-				//'Database'      => 'ragnarok', // Defaults to DbConfig.Database
+				'DateTimezone'  => 'America/Sao_Paulo',       // Especifica o fuso horário de jogo do servidor para este par de char/mapa. (Ver: http://php.net/timezones)
+				//'ResetDenyMaps' => 'sec_pri',  // Padrão é 'sec_pri'. Este valor pode ser uma matriz de nomes de mapa.
+				//'Database'      => 'ragnarok', // Padrão é DbConfig.Database
 				'CharServer'    => array(
 					'Address'   => '127.0.0.1',
 					'Port'      => 6121
@@ -71,20 +71,20 @@ return array(
 					'Address'   => '127.0.0.1',
 					'Port'      => 5121
 				),
-				// -- WoE days and times --
-				// First parameter: Starding day 0=Sunday / 1=Monday / 2=Tuesday / 3=Wednesday / 4=Thursday / 5=Friday / 6=Saturday
-				// Second parameter: Starting hour in 24-hr format.
-				// Third paramter: Ending day (possible value is same as starting day).
-				// Fourth (final) parameter: Ending hour in 24-hr format.
-				// ** (Note, invalid times are ignored silently.)
+				// -- WoE dias e as horas -
+				// Primeiro parâmetro: Ínicio dia 0 = Domingo / 1 = segunda-feira / 2 = terça-feira / 3 = quarta-feira / 4 = quinta-feira / 5 = sexta-feira / 6 = sábado
+				// Segundo parâmetro: começando a hora no formato 24-horas.
+				// Terceiro parâmetro: dia final (valor possível é o mesmo que começar o dia).
+				// Quarto parâmetro (final): hora final no formato 24-horas.
+				// ** (Note, momentos inválidos são ignorados silenciosamente.)
 				'WoeDayTimes'   => array(
-					//array(0, '12:00', 0, '14:00'), // Example: Starts Sunday 12:00 PM and ends Sunday 2:00 PM
-					//array(3, '14:00', 3, '15:00')  // Example: Starts Wednesday 2:00 PM and ends Wednesday 3:00 PM
+					//array(0, '12:00', 0, '14:00'), // Exemplo: começa domingo 12:00 e termina domingo 14:00
+					//array(3, '14:00', 3, '15:00')  // Exemplo: começa quarta-feira 14:00 e termina quarta-feira 15:00
 				),
-				// Modules and/or actions to disallow access to during WoE.
+				// Módulos e/ou ações para impedir o acesso ao durante a WoE.
 				'WoeDisallow'   => array(
-					array('module' => 'character', 'action' => 'online'),  // Disallow access to "Who's Online" page during WoE.
-					array('module' => 'character', 'action' => 'mapstats') // Disallow access to "Map Statistics" page during WoE.
+					array('module' => 'character', 'action' => 'online'),  // Não permitir acesso a página de "Quem está Online" durante a WoE.
+					array('module' => 'character', 'action' => 'mapstats') // Não permitir acesso a página "Estatísticas do mapa", durante a WoE.
 				)
 			)
 		)
