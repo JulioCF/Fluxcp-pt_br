@@ -10,7 +10,6 @@ $accountID = $params->get('id');
 $creditsTable  = Flux::config('FluxTables.CreditsTable');
 $creditColumns = 'credits.balance, credits.last_donation_date, credits.last_donation_amount';
 
-
 $sql  = "SELECT login.*, {$creditColumns} FROM {$server->loginDatabase}.login ";
 $sql .= "LEFT OUTER JOIN {$creditsTable} AS credits ON login.account_id = credits.account_id ";
 $sql .= "WHERE login.sex != 'S' AND login.level >= 0 AND login.account_id = ? LIMIT 1";
@@ -36,6 +35,7 @@ if ($account) {
 	}
 	
 	if (count($_POST)) {
+
 		$email      = trim($params->get('email'));
 		$gender     = trim($params->get('gender'));
 		$loginCount = (int)$params->get('logincount');
@@ -45,13 +45,13 @@ if ($account) {
 		$level      = (int)$params->get('level');
 		$balance    = (int)$params->get('balance');
 		
-		if ($isMine && $account->level != $level) {
+		 if ($isMine && $account->level != $level) {	  	
 			$errorMessage = Flux::message('CannotModifyOwnLevel');
 		}
-		elseif ($account->level != $level && !$auth->allowedToEditAccountLevel) {
+		elseif ($account->level != $level && !$auth->allowedToEditAccountLevel) {	  	
 			$errorMessage = Flux::message('CannotModifyAnyLevel');
 		}
-		elseif ($level > $session->account->level) {
+		elseif ($level > $session->account->level) {	  	
 			$errorMessage = Flux::message('CannotModifyLevelSoHigh');
 		}
 		elseif (!in_array($gender, array('M', 'F'))) {
@@ -60,7 +60,7 @@ if ($account) {
 		elseif ($account->balance != $balance && !$auth->allowedToEditAccountBalance) {
 			$errorMessage = Flux::message('CannotModifyBalance');
 		}
-		elseif ($birthdate && !preg_match('/^\d{4}-\d{2}-\d{2}$/', $birthdate)) {	
+		elseif ($birthdate && !preg_match('/^\d{4}-\d{2}-\d{2}$/', $birthdate)) {
 			$errorMessage = Flux::message('InvalidBirthdate');
 		}
 		elseif ($lastLogin && !preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $lastLogin)) {
@@ -79,9 +79,9 @@ if ($account) {
 			$sql  = "UPDATE {$server->loginDatabase}.login SET email = :email, ";
 			$sql .= "sex = :sex, logincount = :logincount, birthdate = :birthdate, lastlogin = :lastlogin, last_ip = :last_ip";
 			
-			if ($auth->allowedToEditAccountLevel) {
-				$sql .= ", level = :level";
-				$bind['level'] = $level;
+			if ($auth->allowedToEditAccountGroupID) {	
+				$sql .= ", group_id = :group_id";	
+				$bind['group_id'] = $group_id;
 			}
 			
 			$bind['account_id'] = $account->account_id;

@@ -1,2 +1,2 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
-<h2>Economia</h2>
+<h2>Economy</h2>

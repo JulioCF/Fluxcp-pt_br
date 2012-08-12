@@ -11,8 +11,38 @@
 		<input type="text" name="name" id="name" value="<?php echo htmlspecialchars($params->get('name')) ?>" />
 		...
 		<label for="type">Tipo:</label>
-		<input type="text" name="type" id="type" value="<?php echo htmlspecialchars($params->get('type')) ?>" />
+		<select name="type">
+			<option value="-1"<?php if (($type=$params->get('type')) === '-1') echo ' selected="selected"' ?>>
+				Qualquer
+			</option>
+			<?php foreach (Flux::config('ItemTypes')->toArray() as $typeId => $typeName): ?>
+				<option value="<?php echo $typeId ?>"<?php if (($type=$params->get('type')) === strval($typeId)) echo ' selected="selected"' ?>>
+					<?php echo htmlspecialchars($typeName) ?>
+				</option>
+				<?php $itemTypes2 = Flux::config('ItemTypes2')->toArray() ?>
+				<?php if (array_key_exists($typeId, $itemTypes2)): ?>
+					<?php foreach ($itemTypes2[$typeId] as $typeId2 => $typeName2): ?>
+					<option value="<?php echo $typeId ?>-<?php echo $typeId2 ?>"<?php if (($type=$params->get('type')) === ($typeId . '-' . $typeId2)) echo ' selected="selected"' ?>>
+						<?php echo htmlspecialchars($typeName . ' - ' . $typeName2) ?>
+					</option>
+					<?php endforeach ?>
+				<?php endif ?>
+			<?php endforeach ?>
+		</select>
 		...
+		<label for="equip_loc">Equipado em:</label>
+		<select name="equip_loc">
+			<option value="-1"<?php if (($equip_loc=$params->get('equip_loc')) === '-1') echo ' selected="selected"' ?>>
+				Qualquer
+			</option>
+			<?php foreach (Flux::config('EquipLocationCombinations')->toArray() as $locId => $locName): ?>
+				<option value="<?php echo $locId ?>"<?php if (($equip_loc=$params->get('equip_loc')) === strval($locId)) echo ' selected="selected"' ?>>
+					<?php echo htmlspecialchars($locName) ?>
+				</option>
+			<?php endforeach ?>
+		</select>
+	</p>
+	<p>
 		<label for="npc_buy">Preço de Compra de NPC:</label>
 		<select name="npc_buy_op">
 			<option value="eq"<?php if (($npc_buy_op=$params->get('npc_buy_op')) == 'eq') echo ' selected="selected"' ?>>é igual a</option>
@@ -20,8 +50,7 @@
 			<option value="lt"<?php if ($npc_buy_op == 'lt') echo ' selected="selected"' ?>>é menor que</option>
 		</select>
 		<input type="text" name="npc_buy" id="npc_buy" value="<?php echo htmlspecialchars($params->get('npc_buy')) ?>" />
-	</p>
-	<p>
+		...
 		<label for="npc_sell">Preço de Venda de NPC:</label>
 		<select name="npc_sell_op">
 			<option value="eq"<?php if (($npc_sell_op=$params->get('npc_sell_op')) == 'eq') echo ' selected="selected"' ?>>é igual a</option>
@@ -37,7 +66,8 @@
 			<option value="lt"<?php if ($weight_op == 'lt') echo ' selected="selected"' ?>>é menor que</option>
 		</select>
 		<input type="text" name="weight" id="weight" value="<?php echo htmlspecialchars($params->get('weight')) ?>" />
-		...
+	</p>
+	<p>
 		<label for="attack">Ataque:</label>
 		<select name="attack_op">
 			<option value="eq"<?php if (($attack_op=$params->get('attack_op')) == 'eq') echo ' selected="selected"' ?>>é igual a</option>
@@ -45,8 +75,7 @@
 			<option value="lt"<?php if ($attack_op == 'lt') echo ' selected="selected"' ?>>é menor que</option>
 		</select>
 		<input type="text" name="attack" id="attack" value="<?php echo htmlspecialchars($params->get('attack')) ?>" />
-	</p>
-	<p>
+		...
 		<label for="defense">Defesa:</label>
 		<select name="defense_op">
 			<option value="eq"<?php if (($defense_op=$params->get('defense_op')) == 'eq') echo ' selected="selected"' ?>>é igual a</option>
@@ -62,7 +91,8 @@
 			<option value="lt"<?php if ($range_op == 'lt') echo ' selected="selected"' ?>>é menor que</option>
 		</select>
 		<input type="text" name="range" id="range" value="<?php echo htmlspecialchars($params->get('range')) ?>" />
-		...
+	</p>
+	<p>
 		<label for="slots">Slots:</label>
 		<select name="slots_op">
 			<option value="eq"<?php if (($slots_op=$params->get('slots_op')) == 'eq') echo ' selected="selected"' ?>>é igual a</option>
@@ -70,8 +100,7 @@
 			<option value="lt"<?php if ($slots_op == 'lt') echo ' selected="selected"' ?>>é menor que</option>
 		</select>
 		<input type="text" name="slots" id="slots" value="<?php echo htmlspecialchars($params->get('slots')) ?>" />
-	</p>
-	<p>
+		...
 		<label for="refineable">Refinável:</label>
 		<select name="refineable" id="refineable">
 			<option value=""<?php if (!($refineable=$params->get('refineable'))) echo ' selected="selected"' ?>>Tudo</option>
@@ -86,7 +115,7 @@
 			<option value="no"<?php if ($for_sale == 'no') echo ' selected="selected"' ?>>Não</option>
 		</select>
 		...
-		<label for="custom">Custom:</label>
+		<label for="custom">Personalizado:</label>
 		<select name="custom" id="custom">
 			<option value=""<?php if (!($custom=$params->get('custom'))) echo ' selected="selected"' ?>>Tudo</option>
 			<option value="yes"<?php if ($custom == 'yes') echo ' selected="selected"' ?>>Sim</option>
@@ -94,7 +123,7 @@
 		</select>
 		
 		<input type="submit" value="Procurar" />
-		<input type="button" value="Reset" onclick="reload()" />
+		<input type="button" value="Resetar" onclick="reload()" />
 	</p>
 </form>
 <?php if ($items): ?>
@@ -103,7 +132,8 @@
 	<tr>
 		<th><?php echo $paginator->sortableColumn('item_id', 'ID do Item') ?></th>
 		<th colspan="2"><?php echo $paginator->sortableColumn('name', 'Nome') ?></th>
-		<th>Type</th>
+		<th>Tipo</th>
+		<th>Equipa em</th>
 		<th><?php echo $paginator->sortableColumn('price_buy', 'Preço de Compra de NPC') ?></th>
 		<th><?php echo $paginator->sortableColumn('price_sell', 'Preço de Venda de NPC') ?></th>
 		<th><?php echo $paginator->sortableColumn('weight', 'Peso') ?></th>
@@ -131,10 +161,17 @@
 			<td colspan="2"><?php echo htmlspecialchars($item->name) ?></td>
 		<?php endif ?>
 		<td>
-			<?php if ($type=$this->itemTypeText($item->type)): ?>
-				<?php echo htmlspecialchars($type); echo " (".$item->type.")"; ?>
+			<?php if ($type=$this->itemTypeText($item->type, $item->view)): ?>
+				<?php echo htmlspecialchars($type) ?>
 			<?php else: ?>
-				<span class="not-applicable">Desconhecido</span>
+				<span class="not-applicable">Desconhecido<?php echo " (".$item->type.")" ?></span>
+			<?php endif ?>
+		</td>
+		<td>
+			<?php if ($loc=$this->equipLocationCombinationText($item->equip_locations)): ?>
+				<?php echo htmlspecialchars($loc) ?>
+			<?php else: ?>
+				<span class="not-applicable">Desconhecido<?php echo " (".$item->equip_locations.")" ?></span>
 			<?php endif ?>
 		</td>
 		<td><?php echo number_format((int)$item->price_buy) ?></td>

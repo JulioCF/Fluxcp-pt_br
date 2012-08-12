@@ -14,10 +14,10 @@ if (count($_POST)) {
 		$errorMessage = Flux::message('EnterEmailAddress');
 	}
 	elseif ($email == $session->account->email) {
-		$errorMessage = '';
-	}
-	elseif (!preg_match('/(.+?)@(.+?)/', $email)) {
 		$errorMessage = Flux::message('EmailCannotBeSame');
+	}
+	elseif (!preg_match('/^(.+?)@(.+?)$/', $email)) {
+		$errorMessage = Flux::message('EmailInvalid');
 	}
 	elseif (!Flux::config('AllowDuplicateEmails')) {
 		$sql = "SELECT email FROM {$server->loginDatabase}.login WHERE email = ? LIMIT 1";
@@ -47,7 +47,7 @@ if (count($_POST)) {
 				$name = $session->loginAthenaGroup->serverName;
 				$link = $this->url('account', 'confirmemail', array('_host' => true, 'code' => $code, 'account' => $session->account->account_id, 'login' => $name));
 				$mail = new Flux_Mailer();
-				$sent = $mail->send($email, 'Mudar E-mail', 'changemail', array(
+				$sent = $mail->send($email, 'Change E-mail', 'changemail', array(
 					'AccountUsername' => $session->account->userid,
 					'OldEmail'        => $session->account->email,
 					'NewEmail'        => $email,

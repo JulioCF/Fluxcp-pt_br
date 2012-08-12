@@ -41,9 +41,9 @@ if ($days=Flux::config('ZenyRankingThreshold')) {
 }
 
 // Whether or not the character is allowed to hide themselves from the Zeny Ranking.
-$sql .= "AND (((hide_from_zr.value IS NULL OR hide_from_zr.value = 0) AND login.level >= ?) OR login.level < ?) ";
-$bind[] = $auth->getLevelToHideFromZenyRank;
-$bind[] = $auth->getLevelToHideFromZenyRank;
+$sql .= "AND (((hide_from_zr.value IS NULL OR hide_from_zr.value = 0) AND login.level >= ?) OR login.level < ?) ";	  	
+    $bind[] = $auth->getLevelToHideFromZenyRank;	  	
+    $bind[] = $auth->getLevelToHideFromZenyRank;
 
 if (!is_null($jobClass)) {
 	$sql .= "AND ch.class = ? ";

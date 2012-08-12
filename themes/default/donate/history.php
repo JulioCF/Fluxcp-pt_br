@@ -62,7 +62,7 @@
 
 <h3>Transações: Falhas</h3>
 <?php if ($failedTxn): ?>
-<p>Você possui <?php echo number_format($failedTotal) ?> transação(ões) que falhou(aram).</p>
+<p>You have <?php echo number_format($failedTotal) ?> held transaction(s).</p>
 <table class="vertical-table">
 	<tr>
 		<th>Transação</th>

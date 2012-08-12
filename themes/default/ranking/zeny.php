@@ -1,7 +1,7 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
 <h2>Ranking de Zeny</h2>
 <h3>
-	Top <?php echo number_format($limit=(int)Flux::config('CharRankingLimit')) ?> de Personagens Mais Ricos
+	Top <?php echo number_format($limit=(int)Flux::config('CharRankingLimit')) ?> de Personagens mais ricos
 	<?php if (!is_null($jobClass)): ?>
 	(<?php echo htmlspecialchars($className=$this->jobClassText($jobClass)) ?>)
 	<?php endif ?>
@@ -11,9 +11,9 @@
 <form action="" method="get" class="search-form2">
 	<?php echo $this->moduleActionFormInputs('ranking', 'zeny') ?>
 	<p>
-		<label for="jobclass">Filtrar por classe:</label>
+		<label for="jobclass">Pesquisar por classe:</label>
 		<select name="jobclass" id="jobclass">
-			<option value=""<?php if (is_null($jobClass)) echo 'selected="selected"' ?>>Tudo</option>
+			<option value=""<?php if (is_null($jobClass)) echo 'selected="selected"' ?>>Todas</option>
 		<?php foreach ($classes as $jobClassIndex => $jobClassName): ?>
 			<option value="<?php echo $jobClassIndex ?>"
 				<?php if (!is_null($jobClass) && $jobClass == $jobClassIndex) echo ' selected="selected"' ?>>
@@ -22,23 +22,23 @@
 		<?php endforeach ?>
 		</select>
 		
-		<input type="submit" value="Filtrar" />
-		<input type="button" value="Reset" onclick="reload()" />
+		<input type="submit" value="Pesquisar" />
+		<input type="button" value="Resetar" onclick="reload()" />
 	</p>
 </form>
 <table class="horizontal-table">
 	<tr>
-		<th>Rank</th>
+		<th>Posição de Rank</th>
 		<th>Nome do Personagem</th>
 		<th>Zeny</th>
 		<th>Classe</th>
 		<th>Base Level</th>
 		<th>Job Level</th>
-		<th colspan="2">Clã</th>
+		<th colspan="2">Nome do Clã</th>
 	</tr>
-	<?php $topRankType = !is_null($jobClass) ? $className : 'character' ?>
+	<?php $topRankType = !is_null($jobClass) ? $className : '' ?>
 	<?php for ($i = 0; $i < $limit; ++$i): ?>
-	<tr<?php if (!isset($chars[$i])) echo ' class="empty-row"'; if ($i === 0) echo ' class="top-ranked" title="<strong>'.htmlspecialchars($chars[$i]->char_name).'</strong> is the richest '.$topRankType.'!"' ?>>
+	<tr<?php if (!isset($chars[$i])) echo ' class="empty-row"'; if ($i === 0) echo ' class="top-ranked" title="<strong>'.htmlspecialchars($chars[$i]->char_name).'</strong> é o personagem mais rico '.$topRankType.'!"' ?>>
 		<td align="right"><?php echo number_format($i + 1) ?></td>
 		<?php if (isset($chars[$i])): ?>
 		<td><strong>

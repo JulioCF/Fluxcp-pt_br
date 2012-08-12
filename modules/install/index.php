@@ -30,7 +30,7 @@ if ($session->installerAuth) {
 			try {
 				$installer->updateAll();
 				if (!$installer->updateNeeded()) {
-					$session->setMessageData('Updates foram instalados.');
+					$session->setMessageData('Updates have been installed.');
 					$session->setInstallerAuthData(false);
 					$this->redirect();
 				}
@@ -71,17 +71,17 @@ if ($session->installerAuth) {
 			}
 			
 			if (!$updateNeeded || !$server) {
-				$errorMessage = 'Servidor inválido ou o servidor não precisa de updates.';
+				$errorMessage = 'Invalid server or the server has no updates.';
 			}
 			elseif (!$username || !$password) {
-				$errorMessage = "Usuário é senha são necessários para updates de servidores.";
+				$errorMessage = "Username and password are required for individual server updates.";
 			}
 			else {
 				$connection = $server->loginAthenaGroup->connection;
 				$connection->reconnectAs($username, $password);
 				try {
 					$server->updateAll();
-					$session->setMessageData("Updates para $serverName foram instalados.");
+					$session->setMessageData("Updates for $serverName have been installed.");
 					$this->redirect();
 				}
 				catch (Flux_Installer_SchemaPermissionError $e) {
@@ -100,7 +100,7 @@ if (count($_POST) && !$session->installerAuth) {
 		$session->setInstallerAuthData(true);
 	}
 	else {
-		$errorMessage = 'Senha incorreta.';
+		$errorMessage = 'Incorrect password.';
 	}
 }
 ?>

@@ -75,7 +75,7 @@ class Flux_Authorization {
 		$accessKeys   = array("$moduleName.$actionName", "$moduleName.*");
 		$accountLevel = $this->session->account->level;
 		$existentKeys = array();
-		
+
 		if ($accessConfig instanceOf Flux_Config) {
 			foreach ($accessKeys as $accessKey) {
 				$accessLevel = $accessConfig->get($accessKey);

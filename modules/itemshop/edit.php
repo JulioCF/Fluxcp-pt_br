@@ -3,7 +3,7 @@ if (!defined('FLUX_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = 'Modificar Item da Loja';
+$title = 'Modify Item in the Shop';
 
 require_once 'Flux/TemporaryTable.php';
 require_once 'Flux/ItemShop.php';
@@ -15,10 +15,14 @@ $categories  = Flux::config('ShopCategories')->toArray();
 $item        = $shop->getItem($shopItemID);
 
 if ($item) {
-	$tableName  = "{$server->charMapDatabase}.items";
-	$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
-	$tempTable  = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
-	$shopTable  = Flux::config('FluxTables.ItemShopTable');
+	if($server->isRenewal) {
+		$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db_re", "{$server->charMapDatabase}.item_db2");
+	} else {
+		$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
+	}
+	$tableName = "{$server->charMapDatabase}.items";
+	$tempTable = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
+	$shopTable = Flux::config('FluxTables.ItemShopTable');
 
 	$col = "id AS item_id, name_japanese AS item_name, type";
 	$sql = "SELECT $col FROM $tableName WHERE items.id = ?";
@@ -42,35 +46,35 @@ if ($item) {
 		$useExisting = (int)$params->get('use_existing');
 
 		if (!$cost) {
-			$errorMessage = 'Você deve colocar um custo de crédito maior que zero.';
+			$errorMessage = 'You must input a credit cost greater than zero.';
 		}
 		elseif ($cost > $maxCost) {
-			$errorMessage = "O custo do item não pode exceder $maxCost.";
+			$errorMessage = "The credit cost must not exceed $maxCost.";
 		}
 		elseif (!$quantity) {
-			$errorMessage = 'Você deve colocar uma quantidade maior que zero.';
+			$errorMessage = 'You must input a quantity greater than zero.';
 		}
 		elseif ($quantity > 1 && !$stackable) {
-			$errorMessage = 'Este item não é acumulável. Quantidade deve ser 1.';
+			$errorMessage = 'This item is not stackable. Quantity must be 1.';
 		}
 		elseif ($quantity > $maxQty) {
-			$errorMessage = "A quantidade máxima não pode exceder $maxQty.";
+			$errorMessage = "The item quantity must not exceed $maxQty.";
 		}
 		elseif (!$info) {
-			$errorMessage = 'Você deve colocar alguma informação sobre o item.';
+			$errorMessage = 'You must input at least some info text.';
 		}
 		else {
 			if ($shop->edit($shopItemID, $category, $cost, $quantity, $info, $useExisting)) {
 				if ($image && $image->get('size') && !$shop->uploadShopItemImage($shopItemID, $image)) {
-					$errorMessage = 'Falha ao fazer upload da imagem.';
+					$errorMessage = 'Failed to upload image.';
 				}
 				else {
-					$session->setMessageData('Item foi modificado com sucesso.');
+					$session->setMessageData('Item has been successfully modified.');
 					$this->redirect($this->url('purchase'));
 				}
 			}
 			else {
-				$errorMessage = 'Falha ao modificar item.';
+				$errorMessage = 'Failed to modify the item.';
 			}
 		}
 	}

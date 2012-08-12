@@ -1,7 +1,7 @@
 <?php
 if (!defined('FLUX_ROOT')) exit;
 
-$title = "Quem eEtá Online";
+$title = "Quem está Online";
 
 $charPrefsTable = Flux::config('FluxTables.CharacterPrefsTable');
 
@@ -42,7 +42,7 @@ if ($auth->allowedToSearchWhosOnline) {
 	}
 
 	if ($charClass) {
-		$className = preg_quote($charClass);
+		$className = preg_quote($charClass, '/');
 		$classIDs  = preg_grep("/.*?$className.*?/i", Flux::config('JobClasses')->toArray());
 
 		if (count($classIDs)) {
@@ -64,10 +64,10 @@ if ($auth->allowedToSearchWhosOnline) {
 	}
 }
 
-// Hide levels greater than or equal to.
-if (($hideLevel=Flux::config('HideFromWhosOnline')) && !$auth->allowedToIgnoreHiddenPref2) {
-	$sqlpartial .= "AND login.level < ? ";
-	$bind[] = $hideLevel;
+// Hide levels greater than or equal to.	  	
+if (($hideLevel=Flux::config('HideFromWhosOnline')) && !$auth->allowedToIgnoreHiddenPref2) {	  	
+  $sqlpartial .= "AND login.level < ? ";	  	
+  $bind[] = $hideLevel;
 }
 
 $sql  = "SELECT COUNT(ch.char_id) AS total FROM {$server->charMapDatabase}.`char` AS ch $sqlpartial";

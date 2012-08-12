@@ -1,15 +1,15 @@
 <?php
-// eA elements.
+// rA elements.
 return array(
-	0 => 'Neutral',
-	1 => 'Water',
-	2 => 'Earth',
-	3 => 'Fire',
-	4 => 'Wind',
-	5 => 'Poison',
-	6 => 'Holy',
-	7 => 'Dark',
-	8 => 'Ghost',
-	9 => 'Undead'
+	0 => 'Neutro',
+	1 => 'Água',
+	2 => 'Terra',
+	3 => 'Fogo',
+	4 => 'Vento',
+	5 => 'Veneno',
+	6 => 'Sagrado',
+	7 => 'Sombrio',
+	8 => 'Fantasma',
+	9 => 'Morto-Vivo'
 );
 ?>

@@ -1,7 +1,7 @@
 <?php
 if (!defined('FLUX_ROOT')) exit;
 
-$title = 'Redefinições de Senhas';
+$title = 'Password Resets';
 
 $resetTable  = Flux::config('FluxTables.ResetPasswordTable');
 $sqlpartial  = "LEFT JOIN {$server->loginDatabase}.login ON login.account_id = log.account_id ";

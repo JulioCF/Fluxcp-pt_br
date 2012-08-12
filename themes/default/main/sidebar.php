@@ -10,14 +10,14 @@ $menuItems = $this->getMenuItems();
 		<td><img src="<?php echo $this->themePath('img/sidebar_admin_complete_top.gif') ?>" /></td>
 	</tr>
 	<tr>
-		<th class="menuitem"><strong>Menu de Administração</strong></th>
+		<th class="menuitem"><strong>Admin Menu</strong></td>
 	</tr>
 	<?php foreach ($adminMenuItems as $menuItem): ?>
 	<tr>
 		<td class="menuitem">
 			<a href="<?php echo $this->url($menuItem['module'], $menuItem['action']) ?>"<?php
 				if ($menuItem['module'] == 'account' && $menuItem['action'] == 'logout')
-					echo ' onclick="return confirm(\'Você tem certeza que quer logar?\')"' ?>>
+					echo ' onclick="return confirm(\'Você tem certeza que deseja sair ?\')"' ?>>
 				<span><?php echo htmlspecialchars($menuItem['name']) ?></span>
 			</a>
 		</td>
@@ -44,7 +44,7 @@ $menuItems = $this->getMenuItems();
 		<td class="menuitem">
 			<a href="<?php echo $menuItem['url'] ?>"<?php
 				if ($menuItem['module'] == 'account' && $menuItem['action'] == 'logout')
-					echo ' onclick="return confirm(\'Você tem certeza que quer sair?\')"' ?>>
+					echo ' onclick="return confirm(\'Você tem certeza que deseja sair ?\')"' ?>>
 				<span><?php echo htmlspecialchars($menuItem['name']) ?></span>
 			</a>
 		</td>

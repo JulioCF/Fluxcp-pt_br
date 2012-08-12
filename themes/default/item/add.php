@@ -135,7 +135,7 @@
 			<td colspan="3"><textarea class="script" name="unequip_script" id="unequip_script"><?php echo htmlspecialchars($unequipScript) ?></textarea></td>
 		</tr>
 		<tr>
-			<td colspan="4" align="right"><input type="submit" value="Adicionar Item" /></td>
+			<td colspan="4" align="right"><input type="submit" value="Add Item" /></td>
 		</tr>
 	</table>
 </form>

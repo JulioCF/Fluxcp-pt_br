@@ -15,8 +15,8 @@
 			<label for="guild_name">Clã:</label>
 			<input type="text" name="guild_name" id="guild_name" value="<?php echo htmlspecialchars($params->get('guild_name')) ?>" />
 
-			<input type="submit" value="Search" />
-			<input type="button" value="Reset" onclick="reload()" />
+			<input type="submit" value="Procurar" />
+			<input type="button" value="Resetar" onclick="reload()" />
 		</p>
 	</form>
 <?php endif ?>

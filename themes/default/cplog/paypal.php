@@ -28,7 +28,7 @@
 		<label for="credits">Créditos:</label>
 		<select name="credits_op">
 			<option value="eq"<?php if (($credits_op=$params->get('credits_op')) == 'eq') echo ' selected="selected"' ?>>é igual a</option>
-			<option value="gt"<?php if ($credits_op == 'gt') echo ' selected="selected"' ?>>é maior que<option>
+			<option value="gt"<?php if ($credits_op == 'gt') echo ' selected="selected"' ?>>é maior que</option>
 			<option value="lt"<?php if ($credits_op == 'lt') echo ' selected="selected"' ?>>é menor que</option>
 		</select>
 		<input type="text" name="credits" id="credits" value="<?php echo htmlspecialchars($params->get('credits')) ?>" />
@@ -53,23 +53,23 @@
 		<?php echo $this->dateField('received_before') ?>
 		
 		<input type="submit" value="Procurar" />
-		<input type="button" value="Reset" onclick="reload()" />
+		<input type="button" value="Resetar" onclick="reload()" />
 	</p>
 </form>
 <?php if ($transactions): ?>
 <?php echo $paginator->infoText() ?>
 <table class="horizontal-table">
 	<tr>
-		<th><?php echo $paginator->sortableColumn('p.txn_id', 'Transação') ?></th>
-		<th><?php echo $paginator->sortableColumn('p.parent_txn_id', 'Pai') ?></th>
-		<th><?php echo $paginator->sortableColumn('p.process_date', 'Processado') ?></th>
-		<th><?php echo $paginator->sortableColumn('p.payment_date', 'Recebido') ?></th>
+		<th><?php echo $paginator->sortableColumn('p.txn_id', 'Transaction') ?></th>
+		<th><?php echo $paginator->sortableColumn('p.parent_txn_id', 'Parent') ?></th>
+		<th><?php echo $paginator->sortableColumn('p.process_date', 'Processed') ?></th>
+		<th><?php echo $paginator->sortableColumn('p.payment_date', 'Received') ?></th>
 		<th><?php echo $paginator->sortableColumn('p.payment_status', 'Status') ?></th>
 		<th><?php echo $paginator->sortableColumn('p.payer_email', 'E-mail') ?></th>
-		<th><?php echo $paginator->sortableColumn('p.mc_gross', 'Quantidade') ?></th>
-		<th><?php echo $paginator->sortableColumn('p.credits', 'Créditos') ?></th>
-		<!--<th><?php echo $paginator->sortableColumn('server_name', 'Servidor') ?></th>-->
-		<th><?php echo $paginator->sortableColumn('l.userid', 'Conta') ?></th>
+		<th><?php echo $paginator->sortableColumn('p.mc_gross', 'Amount') ?></th>
+		<th><?php echo $paginator->sortableColumn('p.credits', 'Credits') ?></th>
+		<!--<th><?php echo $paginator->sortableColumn('server_name', 'Server') ?></th>-->
+		<th><?php echo $paginator->sortableColumn('l.userid', 'Account') ?></th>
 	</tr>
 	<?php foreach ($transactions as $txn): ?>
 	<tr>
@@ -92,13 +92,19 @@
 					<?php echo $txn->parent_txn_id ?>
 				<?php endif ?>
 			<?php else: ?>
-				<span class="not-applicable">Nada</span>
+				<span class="not-applicable">None</span>
 			<?php endif ?>
 		</td>
 		<td><?php echo $this->formatDateTime($txn->process_date) ?></td>
 		<td><?php echo $this->formatDateTime($txn->payment_date) ?></td>
 		<td><?php echo $txn->payment_status ?></td>
-		<td><?php echo htmlspecialchars($txn->payer_email) ?></td>
+		<td>
+			<?php if ($auth->actionAllowed('account', 'index')): ?>
+				<?php echo $this->linkToAccountSearch(array('email' => $txn->payer_email), $txn->payer_email) ?>
+			<?php else: ?>
+				<?php echo htmlspecialchars($txn->payer_email) ?>
+			<?php endif ?>
+		</td>
 		<td><?php echo $txn->mc_gross ?> <?php echo $txn->mc_currency ?></td>
 		<td><?php echo number_format((int)$txn->credits) ?></td>
 		<!--<td><?php echo htmlspecialchars($txn->server_name) ?></td>-->
@@ -110,7 +116,7 @@
 					<?php echo htmlspecialchars($txn->userid) ?>
 				<?php endif ?>
 			<?php else: ?>
-				<span class="not-applicable">Desconhecido</span>
+				<span class="not-applicable">Unknown</span>
 			<?php endif ?>
 		</td>
 	</tr>

@@ -1,12 +1,12 @@
 <?php
 if (!defined('FLUX_ROOT')) exit;
 
-$title = 'Horários da GdE';
+$title = 'WoE Hours';
 
 $col  = "sday.value AS sday, eday.value AS eday, ";
 $col .= "stime.value AS stime, etime.value AS etime";
 
-$dayNames = array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado');
+$dayNames = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
 $woeTimes = array();
 foreach ($session->loginAthenaGroup->athenaServers as $athenaServer) {
 	$sql  = "SELECT $col FROM {$athenaServer->charMapDatabase}.mapreg AS sday ";

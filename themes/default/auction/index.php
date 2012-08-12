@@ -1,2 +1,2 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
-<h2>Leilão</h2>
+<h2>Auction</h2>

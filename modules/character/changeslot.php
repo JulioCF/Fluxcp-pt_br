@@ -14,10 +14,10 @@ if (!$char || ($char->account_id != $session->account->account_id && !$auth->all
 	$this->deny();
 }
 
-$title = "Mudar Slot para {$char->name}";
+$title = "Change Slot for {$char->name}";
 
 if ($char->online) {
-	$session->setMessageData("Impossível alterar o slot de {$char->name}. Personagem está online.");
+	$session->setMessageData("Cannot change {$char->name}'s slot.  He/she is currenty online.");
 	$this->redirect();
 }
 
@@ -29,13 +29,13 @@ if (count($_POST)) {
 	$slot = (int)$params->get('slot');
 	
 	if ($slot > $server->maxCharSlots) {
-		$errorMessage = "O slot não pode ser maior que {$server->maxCharSlots}.";
+		$errorMessage = "Slot number must not be greater than {$server->maxCharSlots}.";
 	}
 	elseif ($slot < 1) {
-		$errorMessage = 'O slot deve ser um número maior que zero.';
+		$errorMessage = 'Slot number must be a number greater than zero.';
 	}
 	elseif ($slot === (int)$char->char_num+1) {
-		$errorMessage = 'Escolha um slot diferente.';
+		$errorMessage = 'Please choose a different slot.';
 	}
 	else {
 		$sql  = "SELECT char_id, name, online FROM {$server->charMapDatabase}.`char` AS ch ";
@@ -48,7 +48,7 @@ if (count($_POST)) {
 		
 		if ($otherChar) {
 			if ($otherChar->online) {
-				$errorMessage = "{$otherChar->name} está usando esse slot e está online.";
+				$errorMessage = "{$otherChar->name} is using that slot, and is currently online.";
 			}
 			else {
 				$sql  = "UPDATE {$server->charMapDatabase}.`char` SET `char`.char_num = ?";
@@ -68,10 +68,10 @@ if (count($_POST)) {
 			
 			if ($otherChar) {
 				$otherNum = $char->char_num + 1;
-				$session->setMessageData("Você trocou o slot de {$char->name} pelo de {$otherChar->name} (#$otherNum and #$slot).");
+				$session->setMessageData("You have successfully swapped {$char->name}'s slot with {$otherChar->name} (#$otherNum and #$slot).");
 			}
 			else {
-				$session->setMessageData("Você trocou o slot de {$char->name} para o slot #$slot.");
+				$session->setMessageData("You have successfully changed {$char->name}'s slot to #$slot.");
 			}
 			
 			$isMine = $char->account_id == $session->account->account_id;

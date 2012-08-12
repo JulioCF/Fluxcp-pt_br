@@ -1,16 +1,22 @@
-﻿<?php
+<?php
 return array(
-	'M' => 'Monstro',
+	'T' => 'Traded',
+	'V' => 'Vended',
 	'P' => 'Player',
-	'L' => 'Lootado',
-	'T' => 'Troca',
-	'V' => 'Vendido',
-	'S' => 'NPC (Loja)',
+	'M' => 'Monster',
+	'S' => 'NPC (Shop)',
 	'N' => 'NPC (Script)',
-	'C' => 'Consumido',
+	'D' => 'Stolen/Ganked',
+	'C' => 'Consumed',
+	'O' => 'Produced',
+	'U' => 'MVP',
 	'A' => 'Admin',
 	'R' => 'Storage',
-	'G' => 'Storage do Clã',
-	'E' => 'Enviado por Mail'
+	'G' => 'Guild Storage',
+	'E' => 'Mailed',
+	'I' => 'Auctioned',
+	'B' => 'Buy Store',
+	'L' => 'Looted',
+	'X' => 'Other'
 );
 ?>

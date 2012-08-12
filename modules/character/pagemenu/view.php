@@ -13,7 +13,7 @@ if (($isMine || $auth->allowedToResetPosition) && $auth->actionAllowed('characte
 	$pageMenu['Resetar Posição'] = $this->url('character', 'resetpos', array('id' => $char->char_id));
 }
 if ($char->partner_id && ($isMine || $auth->allowedToDivorceCharacter) && $auth->actionAllowed('character', 'divorce')) {
-	$pageMenu['Divorciar'] = $this->url('character', 'divorce', array('id' => $char->char_id));
+	$pageMenu['Divórcio'] = $this->url('character', 'divorce', array('id' => $char->char_id));
 }
 return $pageMenu;
 ?>

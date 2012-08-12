@@ -1,7 +1,7 @@
 <?php
 if (!defined('FLUX_ROOT')) exit;
 
-$title = 'Reinstalar SQL\'s do Banco de Dados';
+$title = 'Re-Install Database Schemas';
 
 if (count($_POST) && $params->get('reinstall')) {
 	$loginDbFiles   = glob(FLUX_DATA_DIR.'/logs/schemas/logindb/*/*.txt');

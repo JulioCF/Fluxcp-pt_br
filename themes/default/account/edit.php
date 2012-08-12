@@ -17,7 +17,7 @@
 				<td><input type="text" name="email" id="email" value="<?php echo htmlspecialchars($account->email) ?>" /></td>
 				<?php if ($auth->allowedToEditAccountLevel && !$isMine): ?>
 					<th><label for="level"><?php echo htmlspecialchars(Flux::message('AccountLevelLabel')) ?></label></th>
-					<td><input type="text" name="level" id="level" value="<?php echo (int)$account->level ?>" /></td>
+					 <td><input type="text" name="level" id="level" value="<?php echo (int)$account->level ?>" /></td>
 				<?php else: ?>
 					<th><?php echo htmlspecialchars(Flux::message('AccountLevelLabel')) ?></th>
 					<td>
@@ -60,13 +60,13 @@
 				<?php endif ?>
 			</tr>
 			<tr>
-	          <th><label for="use_birthdate"><?php echo htmlspecialchars(Flux::message('AccountBirthdateLabel')) ?></label></th>
-             <td colspan="3">
-                <input type="checkbox" name="use_birthdate" id="use_birthdate" />	
-                <?php echo $this->dateField('birthdate', $account->birthdate) ?>	
-			 </td>	
+				<th><label for="use_birthdate"><?php echo htmlspecialchars(Flux::message('AccountBirthdateLabel')) ?></label></th>
+				<td colspan="3">
+					<input type="checkbox" name="use_birthdate" id="use_birthdate" />
+					<?php echo $this->dateField('birthdate', $account->birthdate) ?>
+				</td>
 			</tr>
-			 <tr>
+			<tr>
 				<th><label for="use_lastlogin"><?php echo htmlspecialchars(Flux::message('LastLoginDateLabel')) ?></label></th>
 				<td colspan="3">
 					<input type="checkbox" name="use_lastlogin" id="use_lastlogin" />

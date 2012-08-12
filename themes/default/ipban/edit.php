@@ -16,9 +16,9 @@
 			<tr>
 				<th><label for="reason"><?php echo htmlspecialchars(Flux::message('IpbanReasonLabel')) ?></label></th>
 				<td>
-					<textarea name="reason" id="reason" class="reason">
-						<?php echo htmlspecialchars(($reason=$params->get('reason')) ? $reason : $ipban->reason) ?>
-					</textarea>
+					<textarea name="reason" id="reason" class="reason"><?php
+						echo htmlspecialchars(($reason=$params->get('reason')) ? $reason : $ipban->reason)
+					?></textarea>
 				</td>
 				<td></td>
 			</tr>
@@ -28,11 +28,20 @@
 				<td></td>
 			</tr>
 			<tr>
+				<th><label for="edit_reason"><?php echo htmlspecialchars(Flux::message('IpbanEditReasonLabel')) ?></label></th>
+				<td>
+					<textarea name="edit_reason" id="edit_reason" class="edit_reason"><?php
+						echo htmlspecialchars(($editReason=$params->get('edit_reason')) ? $editReason : '')
+					?></textarea>
+				</td>
+				<td></td>
+			</tr>
+			<tr>
 				<td></td>
 				<td colspan="2"><input type="submit" value="<?php echo htmlspecialchars(Flux::message('IpbanEditButton')) ?>" /></td>
 			</tr>
 		</table>
 	</form>
 <?php else: ?>
-<p>Nenhum IP foi banido. <a href="javascript:history.go(-1)">Voltar</a>.</p>
+<p>No such IP ban. <a href="javascript:history.go(-1)">Go back</a>.</p>
 <?php endif ?>

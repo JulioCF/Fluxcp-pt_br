@@ -8,10 +8,10 @@ require_once 'Flux/MapServer.php';
 require_once 'Flux/Athena.php';
 require_once 'Flux/LoginAthenaGroup.php';
 require_once 'Flux/Addon.php';
-require_once 'functions/svn_version.php';
+require_once 'functions/git_hash.php';
 
 // Get the SVN revision of the top-level directory (FLUX_ROOT).
-define('FLUX_SVNVERSION', svn_version());
+define('FLUX_GITHASH', git_hash());
 
 /**
  * The Flux class contains methods related to the application on the larger
@@ -27,7 +27,7 @@ class Flux {
 	/**
 	 * Top-level revision.
 	 */
-	const SVNVERSION = FLUX_SVNVERSION;
+	const GITHASH = FLUX_GITHASH;
 	
 	/**
 	 * Application-specific configuration object.
@@ -386,6 +386,7 @@ class Flux {
 				// Char/Map normalization.
 				//
 				
+				$charMapServer->setRenewal(true, $options);
 				$charMapServer->setBaseExpRates(1, $options);
 				$charMapServer->setJobExpRates(1, $options);
 				$charMapServer->setMvpExpRates(1, $options);
@@ -630,16 +631,49 @@ class Flux {
 	 * Get the item type name from an item type.
 	 *
 	 * @param int $id
+	 * @param int $id2
 	 * @return mixed Item Type or false.
 	 * @access public
 	 */
-	public static function getItemType($id)
+	public static function getItemType($id, $id2)
 	{
-		$key   = "ItemTypes.$id";
+		$key  = "ItemTypes.$id";
 		$type = self::config($key);
+		
+		if ($id2) {
+			$key = "ItemTypes2.$id.$id2";
+			$type2 = self::config($key);
+			
+			if ($type && $type2) {
+				$type .= ' - ' . $type2;
+			}
+			else if ($type2) {
+				$type = $type2;
+			}
+		}
 		
 		if ($type) {
 			return $type;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Get the equip location combination name from an equip location combination type.
+	 *
+	 * @param int $id
+	 * @return mixed Equip Location Combination or false.
+	 * @access public
+	 */
+	public static function getEquipLocationCombination($id)
+	{
+		$key   = "EquipLocationCombinations.$id";
+		$combination = self::config($key);
+		
+		if ($combination) {
+			return $combination;
 		}
 		else {
 			return false;
@@ -744,19 +778,9 @@ class Flux {
 	 */
 	public static function getEquipLocationList()
 	{
-		return array(
-			256 => 'Upper Headgear',
-			512 => 'Middle Headgear',
-			  1 => 'Lower Headgear',
-			 16 => 'Armor',
-			  2 => 'Weapon',
-			 32 => 'Shield',
-			  4 => 'Garment',
-			 64 => 'Footgear',
-			  8 => 'Accessory 1',
-			128 => 'Accessory 2'
-		);
-	}	
+		$equiplocations = Flux::config('EquipLocations')->toArray();
+		return $equiplocations;
+	}
 	
 	/**
 	 * Get array of equip_upper bits. (bit => upper_name pairs)
@@ -883,6 +907,15 @@ class Flux {
 	{
 		$race = Flux::config("MonsterRaces.$race");
 		return $race;
+	}
+	
+	/**
+	 *
+	 */
+	public static function monsterSizeName($size)
+	{
+		$size = Flux::config("MonsterSizes.$size");
+		return $size;
 	}
 }
 ?>

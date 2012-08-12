@@ -4,11 +4,15 @@ if (!defined('FLUX_ROOT')) exit;
 require_once 'Flux/Config.php';
 require_once 'Flux/TemporaryTable.php';
 
-$tableName  = "{$server->charMapDatabase}.items";
-$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
-$tempTable  = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
+if($server->isRenewal) {
+	$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db_re", "{$server->charMapDatabase}.item_db2");
+} else {
+	$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
+}
+$tableName = "{$server->charMapDatabase}.items";
+$tempTable = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
 
-$title = 'Modificar Item';
+$title = 'Modify Item';
 
 $itemID = $params->get('id');
 
@@ -44,6 +48,12 @@ if ($item) {
 		$weaponLevel   = $params->get('weapon_level');
 		$equipLevel    = $params->get('equip_level');
 		$refineable    = $params->get('refineable');
+		$equipLoc      = $params->get('equip_locations');
+		
+		if (count($typeSplit = explode('-', $type)) == 2) {
+			$type      = $typeSplit[0];
+			$viewID    = $typeSplit[1];
+		}
 	}
 	else {
 		$viewID        = $item->view;
@@ -60,10 +70,7 @@ if ($item) {
 		$weaponLevel   = $item->weapon_level;
 		$equipLevel    = $item->equip_level;
 		$refineable    = $item->refineable;
-	}
-	
-	if ($item->equip_locations) {
-		$item->equip_locations = Flux::equipLocationsToArray($item->equip_locations);
+		$equipLoc      = $item->equip_locations;
 	}
 	if ($item->equip_upper) {
 		$item->equip_upper = Flux::equipUpperToArray($item->equip_upper);
@@ -72,7 +79,6 @@ if ($item) {
 		$item->equip_jobs = Flux::equipJobsToArray($item->equip_jobs);
 	}
 	
-	$equipLocs     = $params->get('equip_locations') ? $params->get('equip_locations') : $item->equip_locations;
 	$equipUpper    = $params->get('equip_upper')     ? $params->get('equip_upper')     : $item->equip_upper;
 	$equipJobs     = $params->get('equip_jobs')      ? $params->get('equip_jobs')      : $item->equip_jobs;
 	
@@ -82,11 +88,6 @@ if ($item) {
 	$script        = $params->get('script') ? $params->get('script') : $item->script;
 	$equipScript   = $params->get('equip_script') ? $params->get('equip_script') : $item->equip_script;
 	$unequipScript = $params->get('unequip_script') ? $params->get('unequip_script') : $item->unequip_script;
-
-	// Equip locations.
-	if ($equipLocs instanceOf Flux_Config) {
-		$equipLocs = $equipLocs->toArray();
-	}
 
 	// Equip upper.
 	if ($equipUpper instanceOf Flux_Config) {
@@ -98,9 +99,6 @@ if ($item) {
 		$equipJobs = $equipJobs->toArray();
 	}
 	
-	if (!is_array($equipLocs)) {
-		$equipLocs = array();
-	}
 	if (!is_array($equipUpper)) {
 		$equipUpper = array();
 	}
@@ -143,7 +141,7 @@ if ($item) {
 			$errorMessage = 'Você deve especificar um identificador.';
 		}
 		elseif (!$itemName) {
-			$errorMessage = 'You must specify an item name.';
+			$errorMessage = 'Você deve especificar um nome de item.';
 		}
 		elseif (!is_null($slots) && !ctype_digit($slots)) {
 			$errorMessage = 'Slots devem ser um número.';
@@ -173,21 +171,11 @@ if ($item) {
 			$errorMessage = 'Level para equipar deve ser um número.';
 		}
 		else {
-			if (empty($errorMessage) && is_array($equipLocs)) {
-				$locs = Flux::getEquipLocationList();
-				foreach ($equipLocs as $bit) {
-					if (!array_key_exists($bit, $locs)) {
-						$errorMessage = 'Localização para equipar inválida.';
-						$equipLocs = null;
-						break;
-					}
-				}
-			}
 			if (empty($errorMessage) && is_array($equipUpper)) {
 				$upper = Flux::getEquipUpperList();
 				foreach ($equipUpper as $bit) {
 					if (!array_key_exists($bit, $upper)) {
-						$errorMessage = 'Equipamento superior inválido.';
+						$errorMessage = 'Localização para equipar inválida.';
 						$equipUpper = null;
 						break;
 					}
@@ -197,15 +185,15 @@ if ($item) {
 				$jobs = Flux::getEquipJobsList();
 				foreach ($equipJobs as $bit) {
 					if (!array_key_exists($bit, $jobs)) {
-						$errorMessage = 'Classes permitidas inválida.';
+						errorMessage = 'Equipamento superior inválido.';
 						$equipJobs = null;
 						break;
 					}
 				}
 			}
 			if (empty($errorMessage)) {
-				$cols = array('id', 'name_english', 'name_japanese', 'type', 'weight');
-				$bind = array($itemID, $identifier, $itemName, $type, $weight*10);
+				$cols = array('id', 'name_english', 'name_japanese', 'type', 'weight', 'equip_locations');
+				$bind = array($itemID, $identifier, $itemName, $type, $weight*10, $equipLoc);
 				$vals = array(
 					'view'           => $viewID,
 					'slots'          => $slots,
@@ -225,15 +213,6 @@ if ($item) {
 				foreach ($vals as $col => $val) {
 					$cols[] = $col;
 					$bind[] = $val;
-				}
-
-				if ($equipLocs) {
-					$bits = 0;
-					foreach ($equipLocs as $bit) {
-						$bits |= $bit;
-					}
-					$cols[] = 'equip_locations';
-					$bind[] = $bits;
 				}
 
 				if ($equipUpper) {

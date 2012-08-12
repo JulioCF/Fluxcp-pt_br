@@ -4,7 +4,7 @@
 <form action="<?php echo $this->url ?>" method="get" class="search-form">
 	<?php echo $this->moduleActionFormInputs($params->get('module'), $params->get('action')) ?>
 	<p>
-		<label for="use_request_after">Eequisição entre:</label>
+		<label for="use_request_after">Redefinição entre:</label>
 		<input type="checkbox" name="use_request_after" id="use_request_after"<?php if ($params->get('use_request_after')) echo ' checked="checked"' ?> />
 		<?php echo $this->dateField('request_after') ?>
 		<label for="use_request_before">&mdash;</label>
@@ -33,8 +33,8 @@
 		<input type="text" name="reset_ip" id="reset_ip" value="<?php echo htmlspecialchars($params->get('reset_ip')) ?>" />
 		
 		<?php if (!$auth->allowedToSearchCpResetPass): ?>
-		<input type="submit" value="Search" />
-		<input type="button" value="Reset" onclick="reload()" />
+		<input type="submit" value="Procurar" />
+		<input type="button" value="Resetar" onclick="reload()" />
 		<?php endif ?>
 	</p>
 	<?php if ($auth->allowedToSearchCpResetPass): ?>
@@ -46,7 +46,7 @@
 		<input type="text" name="new_password" id="new_password" value="<?php echo htmlspecialchars($params->get('new_password')) ?>" />
 		
 		<input type="submit" value="Procurar" />
-		<input type="button" value="Reset" onclick="reload()" />
+		<input type="button" value="Resetar" onclick="reload()" />
 	</p>
 	<?php endif ?>
 </form>
@@ -78,7 +78,7 @@
 			<?php if ($reset->userid): ?>
 				<?php echo htmlspecialchars($reset->userid) ?>
 			<?php else: ?>
-				<span class="not-applicable">Desconhecido</span>
+				<span class="not-applicable">Unknown</span>
 			<?php endif ?>
 		</td>
 		<?php if (Flux::config('CpResetLogShowPassword') && $auth->allowedToSeeCpResetPass): ?>
@@ -86,7 +86,13 @@
 		<td><?php echo htmlspecialchars($reset->new_password) ?></td>
 		<?php endif ?>
 		<td><?php echo $this->formatDateTime($reset->request_date) ?></td>
-		<td><?php echo htmlspecialchars($reset->request_ip) ?></td>
+		<td>
+			<?php if ($auth->actionAllowed('account', 'index')): ?>
+				<?php echo $this->linkToAccountSearch(array('last_ip' => $reset->request_ip), $reset->request_ip) ?>
+			<?php else: ?>
+				<?php echo htmlspecialchars($reset->request_ip) ?>
+			<?php endif ?>
+		</td>
 		<td>
 			<?php if ($reset->reset_date): ?>
 				<?php echo $this->formatDateTime($reset->reset_date) ?>
@@ -96,7 +102,11 @@
 		</td>
 		<td>
 			<?php if ($reset->reset_ip): ?>
-				<?php echo htmlspecialchars($reset->reset_ip) ?>
+				<?php if ($auth->actionAllowed('account', 'index')): ?>
+					<?php echo $this->linkToAccountSearch(array('last_ip' => $reset->reset_ip), $reset->reset_ip) ?>
+				<?php else: ?>
+					<?php echo htmlspecialchars($reset->reset_ip) ?>
+				<?php endif ?>
 			<?php else: ?>
 				<span class="not-applicable">Nada</span>
 			<?php endif ?>

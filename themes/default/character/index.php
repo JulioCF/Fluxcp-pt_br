@@ -74,14 +74,14 @@
 		<input type="text" name="slot" id="slot" value="<?php echo htmlspecialchars($params->get('slot')) ?>" />
 		
 		<input type="submit" value="Procurar" />
-		<input type="button" value="Reset" onclick="reload()" />
+		<input type="button" value="Resetar" onclick="reload()" />
 	</p>
 </form>
 <?php if ($characters): ?>
 <?php echo $paginator->infoText() ?>
 <table class="vertical-table">
 	<tr>
-		<th><?php echo $paginator->sortableColumn('ch.char_id', 'ID') ?></th>
+		<th><?php echo $paginator->sortableColumn('ch.char_id', 'Char ID') ?></th>
 		<th><?php echo $paginator->sortableColumn('userid', 'Conta') ?></th>
 		<th><?php echo $paginator->sortableColumn('char_name', 'Personagem') ?></th>
 		<th>Job Class</th>
@@ -135,7 +135,7 @@
 				<?php endif ?>
 			</td>
 		<?php else: ?>
-			<td colspan="2" align="center"><span class="not-applicable">None</span></td>
+			<td colspan="2" align="center"><span class="not-applicable">Nada</span></td>
 		<?php endif ?>
 		<td>
 			<?php if ($char->partner_name): ?>

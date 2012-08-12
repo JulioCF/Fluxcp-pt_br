@@ -48,7 +48,7 @@ return array(
 	'ItemNameLabel'           => 'Item Name',
 	'ItemAmountLabel'         => 'Amount',
 	'ItemIdentifyLabel'       => 'Identified',
-	'ItemRefineLabel'         => 'Refined',
+	'ItemRefineLabel'         => 'Refine',
 	'ItemBrokenLabel'         => 'Broken',
 	'ItemCard0Label'          => 'Card 0',
 	'ItemCard1Label'          => 'Card 1',
@@ -60,6 +60,7 @@ return array(
 	'EmailChangeTitle'        => 'Change E-mail',
 	'EnterEmailAddress'       => 'Please enter an e-mail address.',
 	'EmailCannotBeSame'       => 'Your new e-mail cannot be the same as your current.',
+	'EmailInvalid'            => 'Invalid e-mail address.',
 	'EmailAlreadyRegistered'  => "The e-mail address you've entered is already registered to another account.",
 	'EmailChangeSent'         => 'An e-mail has been sent to your new address with a link that will confirm the change.',
 	'EmailAddressChanged'     => 'Your e-mail address has been changed!',
@@ -76,7 +77,13 @@ return array(
 	'NeedNewPassword'         => 'Please enter your new password.',
 	'OldPasswordInvalid'      => "The password you provided doesn't match the one we have on record.",
 	'ConfirmNewPassword'      => 'Please confirm your new password.',
+	'PasswordContainsUser'    => 'Your new password cannot contain your username.',
+	'NewPasswordInvalid'      => 'Your new password contains invalid characters.',
 	'NewPasswordSameAsOld'    => 'New password cannot be the same as your current password.',
+	'NewPasswordNeedUpper'    => 'Your new password must contain at least %d uppercase letter(s).',
+	'NewPasswordNeedLower'    => 'Your new password must contain at least %d lowercase letter(s).',
+	'NewPasswordNeedNumber'   => 'Your new password must contain at least %d number(s).',
+	'NewPasswordNeedSymbol'   => 'Your new password must contain at least %d symbol(s).',
 	'PasswordHasBeenChanged'  => 'Your password has been changed, please log-in again.',
 	'FailedToChangePassword'  => 'Failed to change your password.  Please contact an admin.',
 	'PasswordChangeHeading'   => 'Change Your Password',
@@ -96,6 +103,7 @@ return array(
 	'GenderChangeCost'        => 'Gender changes cost %s credit(s).',
 	'GenderChangeBalance'     => 'Your current balance is %s credit(s).',
 	'GenderChangeNoFunds'     => 'You do not have enough credits to perform a gender change at this time.',
+	'GenderChangeNoCost'      => 'For you, gender changes are free.',
 	'GenderChangeCharInfo'    => 'You cannot change gender if you have the follow character jobs: %s',
 	'GenderChangeSubHeading'  => 'Please make sure you want to really change!',
 	'GenderChangeFormText'    => 'Would you like to change your gender to %s?',
@@ -129,6 +137,7 @@ return array(
 	'AccountBirthdateLabel'   => 'Birthdate',
 	'AccountSecurityLabel'    => 'Security Code',
 	'AccountCreateButton'     => 'Create My Account',
+	'AccountInvalidChars'     => "A username can only contain these characters: '%s'",
 	'InvalidLoginServer'      => 'Invalid login server selected, please try again with a valid server.',
 	'InvalidLoginCredentials' => 'Invalid login credentials, please verify that you typed the correct info and try again.',
 	'UnexpectedLoginError'    => 'Unexpected error occurred, please try again or report to an admin.',
@@ -136,15 +145,22 @@ return array(
 	'UsernameAlreadyTaken'    => "The username you've chosen has already been taken by another user.",
 	'UsernameTooShort'        => sprintf('Your username should be around %d to %d characters long.', Flux::config('MinUsernameLength'), Flux::config('MaxUsernameLength')),
 	'UsernameTooLong'         => sprintf('Your username should be around %d to %d characters long.', Flux::config('MinUsernameLength'), Flux::config('MaxUsernameLength')),
-	'PasswordTooShort'        => sprintf('Your password should be around %d to %d characters long.', Flux::config('MinPasswordLength'), Flux::config('MaxPasswordLength')),
-	'PasswordTooLong'         => sprintf('Your password should be around %d to %d characters long.', Flux::config('MinPasswordLength'), Flux::config('MaxPasswordLength')),
-	'PasswordsDoNotMatch'     => "Your passwords do not match, please make sure that you'ved typed them both correctly.",
+	'PasswordContainsUser'    => 'Your password cannot contain your username.',
+	'PasswordHasUsername'     => 'Your password must not contain your username.',
+	'PasswordTooShort'        => 'Your password should be around %d to %d characters long.',
+	'PasswordTooLong'         => 'Your password should be around %d to %d characters long.',
+	'PasswordsDoNotMatch'     => "Your passwords do not match, please make sure that you've typed them both correctly.",
+	'PasswordNeedUpper'       => 'Your password must contain at least %d uppercase letter(s).',
+	'PasswordNeedLower'       => 'Your password must contain at least %d lowercase letter(s).',
+	'PasswordNeedNumber'      => 'Your password must contain at least %d number(s).',
+	'PasswordNeedSymbol'      => 'Your password must contain at least %d symbol(s).',
 	'EmailAddressInUse'       => "The e-mail address you've entered is already registered to another account.  Please use a different e-mail address.",
 	'InvalidEmailAddress'     => "The e-mail address you've entered is not in a valid e-mail address format.",
 	'InvalidGender'           => 'Gender should be "M" or "F"',
-	'InvalidBirthdate'        => 'Invalid birthdate input.',
 	'InvalidServer'           => "The server you've selected does not exist.",
 	'InvalidSecurityCode'     => 'Please enter the security code correctly.',
+	'InvalidPassword'         => 'Your password contains invalid characters.',
+	'InvalidBirthdate'        => 'Invalid birthdate input.',
 	'CriticalRegisterError'   => 'Something bad happened.  Report to an administrator ASAP.',
 	// - account/edit
 	'AccountEditTitle'        => 'Modify Account',
@@ -153,6 +169,7 @@ return array(
 	'CannotModifyOwnLevel'    => 'You cannot modify your own account level.',
 	'CannotModifyAnyLevel'    => 'You cannot modify account levels.',
 	'CannotModifyLevelSoHigh' => 'You cannot set an account level to be higher than your own.',
+	'InvalidGroupID'          => 'Invalid group ID.',
 	'CannotModifyBalance'     => 'You cannot modify account balances.',
 	'InvalidLastLoginDate'    => 'Invalid last login date.',
 	'AccountModified'         => 'Account has been modified.',
@@ -198,6 +215,7 @@ return array(
 	'ResetPassTitle'          => 'Reset Password',
 	'ResetPassEnterAccount'   => 'Please enter your account username.',
 	'ResetPassEnterEmail'     => 'Please enter your e-mail address.',
+	'ResetPassDisallowed'     => 'Password recovery cannot be used for this account.',
 	'ResetPassFailed'         => 'Failed to send reset password e-mail.',
 	'ResetPassEmailSent'      => 'An e-mail has been sent with details on how to reset your password.',
 	'ResetPassTitle'          => 'Reset Password',
@@ -322,6 +340,7 @@ return array(
 	'DivorceMustBeOffline2'   => '%s, his/her partner and their child must be off-line.',
 	'DivorceText1'            => "Are you sure you want to divorce %s and his/her partner?",
 	'DivorceText2'            => 'If %s has a child, the child will also be orphaned.',
+	'DivorceText3'            => 'Wedding rings will also be deleted.',
 	'DivorceButton'           => 'Yes, do it please.',
 	'DivorceSuccessful'       => '%s has been divorced!',
 	
@@ -388,12 +407,27 @@ return array(
 	'HistoryIndexHeading'     => 'My Account History',
 	'HistoryIndexInfo'        => 'Here you can view past account activity of your account.',
 	'HistoryIndexInfo2'       => 'Please select an action from the menu.',
+	// - history/passchange
+	'HistoryPassChangeTitle'      => 'Password Changes',
+	'HistoryPassChangeHeading'    => 'Password Changes',
+	'HistoryPassChangeChangeDate' => 'Change Date',
+	'HistoryPassChangeChangeIp'   => 'Change IP',
+	'HistoryNoPassChanges'        => 'No password changes found.',
+	// -history/passreset
+	'HistoryPassResetTitle'       => 'Password Resets',
+	'HistoryPassResetHeading'     => 'Password Resets',
+	'HistoryPassResetRequestDate' => 'Request Date/Time',
+	'HistoryPassResetRequestIp'   => 'Request IP',
+	'HistoryPassResetResetDate'   => 'Reset Date',
+	'HistoryPassResetResetIp'     => 'Reset IP',
+	'HistoryNoPassResets'         => 'No password reset attempts found.',
 	
 	// Module: ipban
 	// - ipban/add
 	'IpbanAddTitle'           => 'Add IP Ban',
 	'IpbanEnterIpPattern'     => 'Please input an IP address or pattern.',
 	'IpbanInvalidPattern'     => 'Invalid IP address or pattern.',
+	'IpbanWhitelistedPattern' => 'This pattern is whitelisted and cannot be blocked.',
 	'IpbanEnterReason'        => 'Please enter a reason for the IP ban.',
 	'IpbanSelectUnbanDate'    => 'Unban date is required.',
 	'IpbanFutureDate'         => 'Unban date must be specified to a future date.',
@@ -408,8 +442,10 @@ return array(
 	'IpbanAddButton'          => 'Add IP Ban',
 	// - ipban/edit
 	'IpbanEditTitle'          => 'Modify IP Ban',
+	'IpbanEnterEditReason'    => 'Please enter a reason for the IP ban modification.',
 	'IpbanEditFailed'         => 'Failed to modify IP ban.',
 	'IpbanEditHeading'        => 'Modify IP Ban',
+	'IpbanEditReasonLabel'    => 'Edit Reason',
 	'IpbanEditButton'         => 'Modify IP Ban',
 	// - ipban/index
 	'IpbanListTitle'          => 'IP Ban List',
@@ -419,11 +455,23 @@ return array(
 	'IpbanBanReasonLabel'     => 'Ban Reason',
 	'IpbanBanExpireLabel'     => 'Ban Expiration Date',
 	'IpbanModifyLink'         => 'Modify',
+	'IpbanRemoveLink'         => 'Remove',
 	'IpbanUnbanButton'        => 'Unban Selected',
 	'IpbanListNoBans'         => 'There are currently no IP bans.',
+	// - ipban/remove
+	'IpbanRemoveTitle'        => 'Remove IP Ban',
+	'IpbanEnterRemoveReason'  => 'Please enter a reason for the IP ban removal.',
+	'IpbanNotBanned'          => 'No matching IP (%s) is currently banned.',
+	'IpbanPatternUnbanned'    => "The IP address/pattern '%s' has been unbanned.",
+	'IpbanRemoveFailed'       => 'Failed to remove IP ban.',
+	'IpbanRemoveHeading'      => 'Remove IP Ban',
+	'IpbanRemoveReasonLabel'  => 'Unban Reason',
+	'IpbanRemoveButton'       => 'Remove IP Ban',
 	// - ipban/unban
 	'IpbanNothingToUnban'     => 'Nothing to unban.',
+	'IpbanEnterUnbanReason'   => 'Please enter a reason for lifting the IP ban(s).',
 	'IpbanUnbanned'           => 'Lifted selected IP ban(s)!',
+	'IpbanUnbanFailed'        => 'Failed to lift %d of the specified IP unban(s)!',
 	
 	// Module: item
 	// - item/add
@@ -439,11 +487,12 @@ return array(
 	// - itemshop/imagedel
 	
 	// Module: logdata
+	// - logdata/chat
 	// - logdata/command
 	'CommandLogTitle'         => 'List Commands',
 	'CommandLogHeading'       => 'Commands',
 	'CommandLogNotFound'      => 'No commands found.',
-	'CommandLogDateLabel'     => 'Command Date/Time',
+	'CommandLogDateLabel'     => 'Date/Time',
 	'CommandLogAccountIdLabel'=> 'Account ID',
 	'CommandLogCharIdLabel'   => 'Character ID',
 	'CommandLogCharNameLabel' => 'Character Name',
@@ -460,22 +509,22 @@ return array(
 	'PickLogTypeLabel'        => 'Type',
 	'PickLogItemLabel'        => 'Item Name',
 	'PickLogAmountLabel'      => 'Amount',
-	'PickLogRefineLabel'      => 'Refinement',
-	'PickLogCard0Label'       => 'Card 1',
-	'PickLogCard1Label'       => 'Card 2',
-	'PickLogCard2Label'       => 'Card 3',
-	'PickLogCard3Label'       => 'Card 4',
+	'PickLogRefineLabel'      => 'Refine',
+	'PickLogCard0Label'       => 'Card 0',
+	'PickLogCard1Label'       => 'Card 1',
+	'PickLogCard2Label'       => 'Card 2',
+	'PickLogCard3Label'       => 'Card 3',
 	'PickLogMapLabel'         => 'Map',
-	// - logdata/zeny	
-  'ZenyLogTitle'            => 'List Zeny Log',	
-  'ZenyLogHeading'          => 'Zeny Log',
-  'ZenyLogNotFound'         => 'No zeny logs found.',
-  'ZenyLogDateLabel'        => 'Date/Time',
-  'ZenyLogCharacterLabel'   => 'Character',
-  'ZenyLogSourceLabel'      => 'Source',
-  'ZenyLogTypeLabel'        => 'Type',	
-  'ZenyLogAmountLabel'      => 'Amount',	
-  'ZenyLogMapLabel'         => 'Map',
+	// - logdata/zeny
+	'ZenyLogTitle'            => 'List Zeny Log',
+	'ZenyLogHeading'          => 'Zeny Log',
+	'ZenyLogNotFound'         => 'No zeny logs found.',
+	'ZenyLogDateLabel'        => 'Date/Time',
+	'ZenyLogCharacterLabel'   => 'Character',
+	'ZenyLogSourceLabel'      => 'Source',
+	'ZenyLogTypeLabel'        => 'Type',
+	'ZenyLogAmountLabel'      => 'Amount',
+	'ZenyLogMapLabel'         => 'Map',
 	
 	// Module: mail
 	// - mail/index
@@ -525,20 +574,6 @@ return array(
 	// - ranking/character
 	// - ranking/guild
 	// - ranking/zeny
-	
-	// Module: reload
-	// - reload/index
-	'ReloadTitle'             => 'Reload Databases',
-	'ReloadHeading'           => 'Reload Databases',
-	'ReloadInfo'              => 'You may reload the server databases here.',
-	'ReloadInfo2'             => 'Please select the database that you would like to reload from the available actions.',
-	// - reload/mobskill
-	'ReloadMobSkillsTitle'    => 'Reload Mob Skills',
-	'ReloadMobSkillsHeading'  => 'Reload Mob Skills',
-	'ReloadMobSkillsError1'   => '%s is not readable.',
-	'ReloadMobSkillsError2'   => '%s is not readable.',
-	'ReloadMobSkillsError3'   => '%s is not writable.',
-	'ReloadMobSkillsInfo'     => 'Mob skills database has been successfully reloaded! (%s bytes written)',
 	
 	// Module: server
 	// - server/info

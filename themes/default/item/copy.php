@@ -30,7 +30,7 @@
 			<td><p>Especificar o novo ID que você quer para o item duplicado.</p></td>
 		</tr>
 		<tr>
-			<td colspan="2" align="right"><input type="submit" value="Duplicar Item" /></td>
+			<td colspan="2" align="right"><input type="submit" value="Duplicate Item" /></td>
 			<td></td>
 		</tr>
 	</table>

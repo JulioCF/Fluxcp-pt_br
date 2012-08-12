@@ -33,11 +33,11 @@ if ($char) {
 		$res = $server->setPrefs($charID, $set);
 		
 		if ($res) {
-			$session->setMessageData('Preferências modificadas.');
+			$session->setMessageData('Preferences have been modified.');
 			$this->redirect($this->urlWithQs);
 		}
 		else {
-			$errorMessage = 'Falha ao modificar preferências.';
+			$errorMessage = 'Falha ao modificar prefer�ncias.';
 		}
 	}
 }

@@ -43,7 +43,7 @@ $markdownURL = 'http://daringfireball.net/projects/markdown/syntax';
 	</table>
 </form>
 <?php if ($preview): ?>
-<h3>Pre-vizualização</h3>
+<h3>Preview</h3>
 <div class="generic-form-div">
 <?php echo $preview ?>
 </div>

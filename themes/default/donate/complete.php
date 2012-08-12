@@ -4,7 +4,8 @@
 <?php $hoursHeld = +(int)Flux::config('HoldUntrustedAccount'); ?>
 <?php if ($hoursHeld): ?>
 	<p>
-		Nota: Existe um sistema de proteção nessa conta. Se você o seu e-mail do jogo for igual ao do PayPal e for a sua primeira doação, você só irá receber os seus créditos depois de <?php echo number_format($hoursHeld) ?> horas.
+		Nota: Existe um sistema de proteção nessa conta.Se você o seu e-mail do jogo for igual ao do PayPal e for a sua primeira doação,
+		você só irá receber os seus créditos depois de <?php echo number_format($hoursHeld) ?> horas.
 	</p>
 <?php endif ?>
 <p>Para completar, um e-mail foi enviado para você contendo os detalhes da sua transação.</p>

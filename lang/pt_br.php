@@ -50,10 +50,10 @@ return array(
 	'ItemIdentifyLabel'       => 'Identificado',
 	'ItemRefineLabel'         => 'Refinado',
 	'ItemBrokenLabel'         => 'Quebrado',
-	'ItemCard0Label'          => 'Card 0',
-	'ItemCard1Label'          => 'Card 1',
-	'ItemCard2Label'          => 'Card 2',
-	'ItemCard3Label'          => 'Card 3',
+	'ItemCard0Label'          => 'Carta 0',
+	'ItemCard1Label'          => 'Carta 1',
+	'ItemCard2Label'          => 'Carta 2',
+	'ItemCard3Label'          => 'Carta 3',
 	
 	// Module: account
 	// - account/changemail
@@ -390,7 +390,7 @@ return array(
 	'HistoryCpLoginTitle'     => 'Logins no Painel de Controle',
 	'HistoryCpLoginHeading'   => 'Logins no Painel de Controle',
 	'HistoryLoginDateLabel'   => 'Data/Hora do Login',
-	'HistoryIpAddrLabel'      => 'IP',
+	'HistoryIpAddrLabel'      => 'Endereço de IP',
 	'HistoryErrorCodeLabel'   => 'Código de Erro',
 	'HistoryNoCpLogins'       => 'Não foram feitos logins no Painel de Controle ainda.',
 	// -history/emailchange
@@ -403,6 +403,20 @@ return array(
 	'HistoryEmailChangeDate'  => 'Data da Mudança',
 	'HistoryEmailChangeIp'    => 'IP que fez a mudança',
 	'HistoryNoEmailChanges'   => 'Não foram feitas alteraçõs de e-mail ainda.',
+	// - history/passchange
+	'HistoryPassChangeTitle'      => 'Alterações de senha',
+	'HistoryPassChangeHeading'    => 'Alterações de senha',
+	'HistoryPassChangeChangeDate' => 'Alterar data',
+	'HistoryPassChangeChangeIp'   => 'Mudar IP',
+	'HistoryNoPassChanges'        => 'Nenhuma alteração de senha encontrada.',
+	// -history/passreset
+	'HistoryPassResetTitle'       => 'Redefinições de senha',
+	'HistoryPassResetHeading'     => 'Redefinições de senha',
+	'HistoryPassResetRequestDate' => 'Solicitação de Data/Hora',
+	'HistoryPassResetRequestIp'   => 'Solicitar IP',
+	'HistoryPassResetResetDate'   => 'Redefinir a data',
+	'HistoryPassResetResetIp'     => 'Redefinir o IP',
+	'HistoryNoPassResets'         => 'Nenhuma senha Redefinida encontradas.',
 	// - history/gamelogin
 	'HistoryGameLoginTitle'   => 'Logins No Jogo',
 	'HistoryGameLoginHeading' => 'Logins No Jogo',
@@ -427,7 +441,7 @@ return array(
 	'IpbanPatternBanned'      => "O IP ou o padrão '%s' foi banido.",
 	'IpbanAddFailed'          => 'Falha ao banir IP.',
 	'IpbanAddHeading'         => 'Banir IP',
-	'IpbanIpAddressLabel'     => 'IP',
+	'IpbanIpAddressLabel'     => 'Endereço de IP',
 	'IpbanReasonLabel'        => 'Razão',
 	'IpbanUnbanDateLabel'     => 'Data de desbanimento',
 	'IpbanIpAddressInfo'      => 'Você pode especificar um padrão de IP como 218.139.*.*',

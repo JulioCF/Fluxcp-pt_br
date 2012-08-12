@@ -42,7 +42,7 @@ $sth  = $loginAthenaGroup->connection->getStatement($sql);
 $newPassword = '';
 $characters  = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 $characters  = str_split($characters, 1);
-$passLength  = intval(($len=Flux::config('RandomPasswordLength')) < 1 ? 8 : $len);
+$passLength  = intval(($len=Flux::config('RandomPasswordLength')) < 8 ? 8 : $len);
 
 for ($i = 0; $i < $passLength; ++$i) {
 	$newPassword .= $characters[array_rand($characters)];
@@ -68,7 +68,7 @@ if (!$sth->execute(array($newPassword, $account))) {
 
 require_once 'Flux/Mailer.php';
 $mail = new Flux_Mailer();
-$sent = $mail->send($acc->email, 'Senha Redefininda', 'newpass', array('AccountUsername' => $acc->userid, 'NewPassword' => $unhashedNewPassword));
+$sent = $mail->send($acc->email, 'Password Has Been Reset', 'newpass', array('AccountUsername' => $acc->userid, 'NewPassword' => $unhashedNewPassword));
 
 if ($sent) {
 	$message = Flux::message('ResetPwDone');

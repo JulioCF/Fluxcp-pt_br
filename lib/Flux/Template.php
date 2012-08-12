@@ -375,18 +375,18 @@ class Flux_Template {
 	
 	/**
 	 * Returns an array of menu items that should be diplayed from the theme.
-	 * Only menu items the current user (and their level) have access to will
-	 * be returned as part of the array;
+	 * Only menu items the current user (and their level) have access to will  	
+     * be returned as part of the array;
 	 *
 	 * @return array
 	 */
 	public function getMenuItems($adminMenus = false)
 	{
-		$auth           = Flux_Authorization::getInstance();
-		$accountLevel   = Flux::$sessionData->account->level;
-		$adminMenuLevel = Flux::config('AdminMenuLevel');
-		$defaultAction  = Flux_Dispatcher::getInstance()->defaultAction;
-		$menuItems      = Flux::config('MenuItems');
+		$auth           = Flux_Authorization::getInstance();	  	
+		$accountLevel   = Flux::$sessionData->account->level;	  	
+		$adminMenuLevel = Flux::config('AdminMenuLevel');	  	
+		$defaultAction  = Flux_Dispatcher::getInstance()->defaultAction;	  	
+		$menuItems      = Flux::config('MenuItems');	  	
 		$allowedItems   = array();
 		
 		if (!($menuItems instanceOf Flux_Config)) {
@@ -551,7 +551,7 @@ class Flux_Template {
 				if (array_key_exists('_https', $params)) {
 					$_https = $params['_https'];
 				}
-				elseif (!empty($_SERVER['HTTPS'])) {
+				elseif (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== "off") {
 					$_https = true;
 				}
 				else {
@@ -599,12 +599,12 @@ class Flux_Template {
 	}
 	
 	/**
-	 * Format money strings (note: name soon to be changed).
+	 * Format currency strings.
 	 *
 	 * @param float $number Amount
 	 * @return string Formatted amount
 	 */
-	public function formatDollar($number)
+	public function formatCurrency($number)
 	{
 		$number = (float)$number;
 		$amount = number_format(
@@ -647,18 +647,19 @@ class Flux_Template {
 	 *
 	 * @param string $name
 	 * @param string $value DATE formatted string.
-	 * @param int $fowardYears	
+	 * @param int $fowardYears
 	 * @param int $backwardYears
 	 * @return string
 	 */
-	public function dateField($name, $value = null, $fowardYears, $backwardYears)
+	public function dateField($name, $value = null, $fowardYears = null, $backwardYears = null)
 	{
-	  if(!isset($fowardYears)) {
-        $fowardYears = (int)Flux::config('ForwardYears');	
-    }	
-    if(!isset($backwardYears)) {	
-      $backwardYears = (int)Flux::config('BackwardYears');	
-    }
+		if(!isset($fowardYears)) {
+			$fowardYears = (int)Flux::config('ForwardYears');
+		}
+		if(!isset($backwardYears)) {
+			$backwardYears = (int)Flux::config('BackwardYears');
+		}
+		
 		$ts    = $value && !preg_match('/^0000-00-00(?: 00:00:00)?$/', $value) ? strtotime($value) : time();
 		$year  = ($year =$this->params->get("{$name}_year"))  ? $year  : date('Y', $ts);
 		$month = ($month=$this->params->get("{$name}_month")) ? $month : date('m', $ts);
@@ -798,8 +799,8 @@ class Flux_Template {
 	 */
 	public function entireUrl($withRequest = true)
 	{
-		$proto    = empty($_SERVER['HTTPS']) ? 'http://' : 'https://';
-		$hostname = $_SERVER['HTTP_HOST'];
+		$proto    = empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === "off" ? 'http://' : 'https://';
+		$hostname = empty($_SERVER['HTTP_HOST']) ? $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
 		$request  = $_SERVER['REQUEST_URI'];
 		
 		if ($withRequest) {
@@ -839,7 +840,26 @@ class Flux_Template {
 	{
 		if ($accountID) {
 			$url = $this->url('account', 'view', array('id' => $accountID));
-			return sprintf('<a href="%s" class="link-to-account">%s</a>', $url, htmlentities($text));
+			return sprintf('<a href="%s" class="link-to-account">%s</a>', $url, htmlspecialchars($text));
+		}
+		else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Link to an account search.
+	 *
+	 * @param array $params
+	 * @param string $text
+	 * @return mixed
+	 * @access public
+	 */
+	public function linkToAccountSearch($params, $text)
+	{
+		if (is_array($params) && count($params)) {
+			$url = $this->url('account', 'index', $params);
+			return sprintf('<a href="%s" class="link-to-account-search">%s</a>', $url, htmlspecialchars($text));
 		}
 		else {
 			return false;
@@ -863,7 +883,7 @@ class Flux_Template {
 			}
 			
 			$url = $this->url('character', 'view', $params);
-			return sprintf('<a href="%s" class="link-to-character">%s</a>', $url, htmlentities($text));
+			return sprintf('<a href="%s" class="link-to-character">%s</a>', $url, htmlspecialchars($text));
 		}
 		else {
 			return false;
@@ -988,12 +1008,25 @@ class Flux_Template {
 	 * Get the item type name from an item type.
 	 *
 	 * @param int $id
+	 * @param int $id2
 	 * @return mixed Item type or false.
 	 * @access public
 	 */
-	public function itemTypeText($id)
+	public function itemTypeText($id, $id2 = null)
 	{
-		return Flux::getItemType($id);
+		return Flux::getItemType($id, $id2);
+	}
+	
+	/**
+	 * Get the equip location combination name from an equip location combination.
+	 *
+	 * @param int $id
+	 * @return mixed Equip location combination or false.
+	 * @access public
+	 */
+	public function equipLocationCombinationText($id)
+	{
+		return Flux::getEquipLocationCombination($id);
 	}
 	
 	/**
@@ -1040,7 +1073,7 @@ class Flux_Template {
 			}
 			
 			$url = $this->url('item', 'view', $params);
-			return sprintf('<a href="%s" class="link-to-item">%s</a>', $url, htmlentities($text));
+			return sprintf('<a href="%s" class="link-to-item">%s</a>', $url, htmlspecialchars($text));
 		}
 		else {
 			return false;
@@ -1126,7 +1159,7 @@ class Flux_Template {
 			}
 			
 			$url = $this->url('monster', 'view', $params);
-			return sprintf('<a href="%s" class="link-to-monster">%s</a>', $url, htmlentities($text));
+			return sprintf('<a href="%s" class="link-to-monster">%s</a>', $url, htmlspecialchars($text));
 		}
 		else {
 			return false;
@@ -1185,7 +1218,7 @@ class Flux_Template {
 			}
 			
 			$url = $this->url('guild', 'view', $params);
-			return sprintf('<a href="%s" class="link-to-guild">%s</a>', $url, htmlentities($text));
+			return sprintf('<a href="%s" class="link-to-guild">%s</a>', $url, htmlspecialchars($text));
 		}
 		else {
 			return false;
@@ -1261,16 +1294,16 @@ class Flux_Template {
 		return file_exists($path) ? $link : false;
 	}
 	
- /**
-  *
-  */
-  public function monsterImage($monsterID)
+ 	/**
+ 	 *
+ 	 */
+	public function monsterImage($monsterID)
 	{
 		$path = sprintf(FLUX_DATA_DIR."/monsters/".Flux::config('MonsterImageNameFormat'), $monsterID);
 		$link = preg_replace('&/{2,}&', '/', "{$this->basePath}/$path");
 		return file_exists($path) ? $link : false;
 	}
-  
+	
 	/**
 	 *
 	 */

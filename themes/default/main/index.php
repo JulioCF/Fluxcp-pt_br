@@ -5,6 +5,5 @@
 <ol>
 	<li><p class="green"><?php echo htmlspecialchars(sprintf(Flux::message('MainPageStep1'), __FILE__)) ?></p></li>
 	<li><p class="green"><?php echo htmlspecialchars(Flux::message('MainPageStep2')) ?></p></li>
-	<li><p class="green"><?php echo htmlspecialchars(Flux::message('MainPageStep3')) ?></p></li>
 </ol>
 <p style="text-align: right"><strong><em><?php echo htmlspecialchars(Flux::message('MainPageThanks')) ?></em></strong></p>

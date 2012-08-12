@@ -1,4 +1,4 @@
-﻿<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('FLUX_ROOT')) exit; ?>
 <h2><?php echo htmlspecialchars(Flux::message('PickLogHeading')) ?></h2>
 <?php if ($picks): ?>
 <?php echo $paginator->infoText() ?>
@@ -79,7 +79,7 @@
 			<?php endif ?>
 		</td>
 		<td><?php echo $pick->amount >= 0 ? '+'.number_format($pick->amount) : number_format($pick->amount) ?></td>
-		<td>+<?php echo $pick->refine ?></td>
+		<td><?php echo $pick->refine ?></td>
 		<!-- Card0 -->
 		<td>
 			<?php if ($pick->card0_name): ?>

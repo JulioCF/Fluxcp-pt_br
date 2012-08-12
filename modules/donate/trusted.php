@@ -3,7 +3,7 @@ if (!defined('FLUX_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = 'E-mails Confiáveis do PayPal';
+$title = 'Trusted PayPal E-mails';
 
 $trustedTable = Flux::config('FluxTables.DonationTrustTable');
 

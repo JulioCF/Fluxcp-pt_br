@@ -2,7 +2,23 @@
 <h2><?php echo htmlspecialchars(Flux::message('AccountCreateHeading')) ?></h2>
 <p><?php printf(htmlspecialchars(Flux::message('AccountCreateInfo')), '<a href="'.$this->url('service', 'tos').'">'.Flux::message('AccountCreateTerms').'</a>') ?></p>
 <?php if (Flux::config('RequireEmailConfirm')): ?>
-<p><strong>Nota:</strong> Você deve providenciar um email para confirmar a sua conta antes de você poder fazer login.</p>
+<p><strong>Note:</strong> You will need to provide a working e-mail address to confirm your account before you can log-in.</p>
+<?php endif ?>
+<p><strong>Note:</strong> <?php echo sprintf("Your password must be between %d and %d characters.", Flux::config('MinPasswordLength'), Flux::config('MaxPasswordLength')) ?></p>
+<?php if (Flux::config('PasswordMinUpper') > 0): ?>
+<p><strong>Note:</strong> <?php echo sprintf(Flux::message('PasswordNeedUpper'), Flux::config('PasswordMinUpper')) ?></p>
+<?php endif ?>
+<?php if (Flux::config('PasswordMinLower') > 0): ?>
+<p><strong>Note:</strong> <?php echo sprintf(Flux::message('PasswordNeedLower'), Flux::config('PasswordMinLower')) ?></p>
+<?php endif ?>
+<?php if (Flux::config('PasswordMinNumber') > 0): ?>
+<p><strong>Note:</strong> <?php echo sprintf(Flux::message('PasswordNeedNumber'), Flux::config('PasswordMinNumber')) ?></p>
+<?php endif ?>
+<?php if (Flux::config('PasswordMinSymbol') > 0): ?>
+<p><strong>Note:</strong> <?php echo sprintf(Flux::message('PasswordNeedSymbol'), Flux::config('PasswordMinSymbol')) ?></p>
+<?php endif ?>
+<?php if (!Flux::config('AllowUserInPassword')): ?>
+<p><strong>Note:</strong> <?php echo Flux::message('PasswordContainsUser') ?></p>
 <?php endif ?>
 <?php if (isset($errorMessage)): ?>
 <p class="red" style="font-weight: bold"><?php echo htmlspecialchars($errorMessage) ?></p>
@@ -56,11 +72,11 @@
 			</td>
 		</tr>
 		
-	    <tr>
-       <th><label><?php echo htmlspecialchars(Flux::message('AccountBirthdateLabel')) ?></label></th>
-       <td><?php echo $this->dateField('birthdate',null,0) ?></td>
-        </tr>
-    
+		<tr>
+			<th><label><?php echo htmlspecialchars(Flux::message('AccountBirthdateLabel')) ?></label></th>
+			<td><?php echo $this->dateField('birthdate',null,0) ?></td>
+		</tr>
+		
 		<?php if (Flux::config('UseCaptcha')): ?>
 		<tr>
 			<?php if (Flux::config('EnableReCaptcha')): ?>

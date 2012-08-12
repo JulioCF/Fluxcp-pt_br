@@ -67,10 +67,10 @@ return array(
 			'emblem'   => AccountLevel::ANYONE,
 			'index'    => AccountLevel::LOWGM,
 			'export'   => AccountLevel::ADMIN,
-			'view'     => AccountLevel::ADMIN
+			'view'     => AccountLevel::NORMAL
 		),
 		'castle'    => array(
-			'index'    => AccountLevel::LOWGM
+			'index'    => AccountLevel::ANYONE
 		),
 		'economy'   => array(
 			'index'    => AccountLevel::NORMAL
@@ -81,7 +81,8 @@ return array(
 		'ranking'   => array(
 			'character' => AccountLevel::ANYONE,
 			'guild'     => AccountLevel::ANYONE,
-			'zeny'      => AccountLevel::ANYONE
+			'zeny'      => AccountLevel::ANYONE,
+			'death'     => AccountLevel::ANYONE
 		),
 		'item'      => array(
 			'index'    => AccountLevel::ANYONE,
@@ -114,18 +115,21 @@ return array(
 			'zeny'    => AccountLevel::ADMIN
 		),
 		'cplog'     => array(
-			'index'   => AccountLevel::ADMIN,
-			'paypal'  => AccountLevel::ADMIN,
-			'login'   => AccountLevel::ADMIN,
+			'index'      => AccountLevel::ADMIN,
+			'paypal'     => AccountLevel::ADMIN,
+			'login'      => AccountLevel::ADMIN,
 			'resetpass'  => AccountLevel::ADMIN,
 			'changepass' => AccountLevel::ADMIN,
-			'changemail' => AccountLevel::ADMIN
+			'changemail' => AccountLevel::ADMIN,
+			'ban'        => AccountLevel::ADMIN,
+			'ipban'      => AccountLevel::ADMIN
 		),
 		'ipban'     => array(
 			'index'    => AccountLevel::ADMIN,
 			'add'      => AccountLevel::ADMIN,
 			'unban'    => AccountLevel::ADMIN,
-			'edit'     => AccountLevel::ADMIN
+			'edit'     => AccountLevel::ADMIN,
+			'remove'   => AccountLevel::ADMIN
 		),
 		'service'   => array(
 			'tos'      => AccountLevel::ANYONE
@@ -140,10 +144,6 @@ return array(
 		'test'      => array(
 			'*'        => AccountLevel::ANYONE
 		),
-		'reload'    => array(
-			'index'   => AccountLevel::ADMIN,
-			'mobskill' => AccountLevel::ADMIN
-		),
 		'woe'       => array(
 			'index'   => AccountLevel::ANYONE
 		),
@@ -154,7 +154,9 @@ return array(
 			'index'       => AccountLevel::NORMAL,
 			'cplogin'     => AccountLevel::NORMAL,
 			'gamelogin'   => AccountLevel::NORMAL,
-			'emailchange' => AccountLevel::NORMAL
+			'emailchange' => AccountLevel::NORMAL,
+			'passchange'  => AccountLevel::NORMAL,
+			'passreset'   => AccountLevel::NORMAL
 		)
 	),
 	// General feature permissions, handled by the modules themselves.
@@ -163,12 +165,12 @@ return array(
 		'ViewAccountBanLog'  => AccountLevel::HIGHGM, // View another person's account ban log.
 		'DeleteAccount'      => AccountLevel::ADMIN,  // (not yet implemented)
 		'DeleteCharacter'    => AccountLevel::ADMIN,  // (not yet implemented)
-		'SeeAccountPassword' => AccountLevel::ADMIN,  // If not using MD5, view another person's password in list.
+		'SeeAccountPassword' => AccountLevel::NOONE,  // If not using MD5, view another person's password in list.
 		'TempBanAccount'     => AccountLevel::LOWGM,  // Has ability to temporarily ban an account.
 		'TempUnbanAccount'   => AccountLevel::LOWGM,  // Has ability to remove a temporary ban on an account.
 		'PermBanAccount'     => AccountLevel::HIGHGM, // Has ability to permanently ban an account.
 		'PermUnbanAccount'   => AccountLevel::HIGHGM, // Has ability to remove a permanent ban on an account.
-		'SearchMD5Passwords' => AccountLevel::ADMIN,  // Ability to search MD5'd passwords in list.
+		'SearchMD5Passwords' => AccountLevel::NOONE,  // Ability to search MD5'd passwords in list.
 		'ViewCharacter'      => AccountLevel::HIGHGM, // View another person's character details.
 		'DivorceCharacter'   => AccountLevel::LOWGM,  // Divorce another character.
 		'AddShopItem'        => AccountLevel::ADMIN,  // Ability to add an item to the shop.
@@ -176,32 +178,36 @@ return array(
 		'DeleteShopItem'     => AccountLevel::ADMIN,  // Ability to remove an item for sale on the shop.
 		'ViewGuild'          => AccountLevel::ADMIN,  // Ability to view another guild's details.
 		'SearchWhosOnline'   => AccountLevel::ANYONE, // Ability to search the "Who's Online" page.
-		'ViewOnlinePosition' => AccountLevel::HELPER, // Ability to see a character's current map on "Who's Online" page.
-		'EditAccountLevel'   => AccountLevel::ADMIN,  // Ability to edit another person's account level.
+		'ViewOnlinePosition' => AccountLevel::LOWGM,  // Ability to see a character's current map on "Who's Online" page.
+		'EditAccountGroupID' => AccountLevel::ADMIN,  // Ability to edit another person's account group ID.
 		'EditAccountBalance' => AccountLevel::ADMIN,  // Ability to edit another person's account balance.
 		'ModifyAccountPrefs' => AccountLevel::ADMIN,  // Ability to modify another person's account preferences.
 		'ModifyCharPrefs'    => AccountLevel::ADMIN,  // Ability to modify another person's character preferences.
-		'IgnoreHiddenPref'   => AccountLevel::HELPER, // Ability to see users on "Who's Online" page, hidden or not.
-		'IgnoreHiddenPref2'  => AccountLevel::HELPER, // Ability to see users on "Who's Online" page, hidden by app config or not.
-		'SeeHiddenMapStats'  => AccountLevel::HELPER, // Ability to see hidden map statistics.
-		'ChangeSlot'         => AccountLevel::LOWGM,  // Level required to change another character's slot.
-		'ModifyIpBan'        => AccountLevel::ADMIN,  // Level required to modify an existing IP ban.
+		'IgnoreHiddenPref'   => AccountLevel::LOWGM,  // Ability to see users on "Who's Online" page, hidden or not.
+		'IgnoreHiddenPref2'  => AccountLevel::LOWGM,  // Ability to see users on "Who's Online" page, hidden by app config or not.
+		'SeeHiddenMapStats'  => AccountLevel::LOWGM,  // Ability to see hidden map statistics.
+		'ChangeSlot'         => AccountLevel::LOWGM,  // Minimum group level required to change another character's slot.
+		'ModifyIpBan'        => AccountLevel::ADMIN,  // Minimum group level required to modify an existing IP ban.
+		'RemoveIpBan'        => AccountLevel::ADMIN,  // Minimum group level required to remove an existing IP ban.
 		'HideFromZenyRank'   => AccountLevel::NORMAL, // Ability to set "Hide from zeny ranking" pref.
 		'SeeItemDbScripts'   => AccountLevel::ANYONE, // Ability to see item_db scripts in view page.
 		'SeeItemDb2Scripts'  => AccountLevel::ADMIN,  // Ability to see item_db2 scripts in view page.
-		'ViewRawTxnLogData'  => AccountLevel::ADMIN,  // Level required to view Raw Transaction Log in txnview page.
-		'ResetLook'          => AccountLevel::LOWGM,  // Level required to reset another character's look.
-		'ResetPosition'      => AccountLevel::LOWGM,  // Level required to reset another character's position.
-		'ViewWoeDisallowed'  => AccountLevel::LOWGM,  // Level required to bypass WoE-disabled page security check.
-		'SeeCpLoginLogPass'  => AccountLevel::ADMIN,  // Level required to see password in CP login log (also requires CpLoginLogShowPassword in application.php)
-		'SearchCpLoginLogPw' => AccountLevel::ADMIN,  // Level required to search through passwords in the CP login log.
-		'SeeCpResetPass'     => AccountLevel::ADMIN,  // Level required to see passwords in CP log's "password resets" page.
-		'SearchCpResetPass'  => AccountLevel::ADMIN,  // Level required to search passwords in CP log's "password resets" page.
-		'SeeAccountID'       => AccountLevel::LOWGM,  // Level required to see Account ID on account view and character view pages.
-		'SeeUnknownItems'    => AccountLevel::LOWGM,  // Level required to see unidentified items as identified.
+		'ViewRawTxnLogData'  => AccountLevel::ADMIN,  // Minimum group level required to view Raw Transaction Log in txnview page.
+		'ResetLook'          => AccountLevel::LOWGM,  // Minimum group level required to reset another character's look.
+		'ResetPosition'      => AccountLevel::LOWGM,  // Minimum group level required to reset another character's position.
+		'ViewWoeDisallowed'  => AccountLevel::LOWGM,  // Minimum group level required to bypass WoE-disabled page security check.
+		'SeeCpLoginLogPass'  => AccountLevel::NOONE,  // Minimum group level required to see password in CP login log (also requires CpLoginLogShowPassword in application.php)
+		'SearchCpLoginLogPw' => AccountLevel::NOONE,  // Minimum group level required to search through passwords in the CP login log.
+		'SeeCpResetPass'     => AccountLevel::NOONE,  // Minimum group level required to see passwords in CP log's "password resets" page.
+		'SearchCpResetPass'  => AccountLevel::NOONE,  // Minimum group level required to search passwords in CP log's "password resets" page.
+		'SeeCpChangePass'    => AccountLevel::NOONE,  // Minimum group level required to see passwords in CP log's "password changes" page.
+		'SearchCpChangePass' => AccountLevel::NOONE,  // Minimum group level required to search passwords in CP log's "password changes" page.
+		'SeeAccountID'       => AccountLevel::LOWGM,  // Minimum group level required to see Account ID on account view and character view pages.
+		'SeeUnknownItems'    => AccountLevel::LOWGM,  // Minimum group level required to see unidentified items as identified.
+		'AvoidSexChangeCost' => AccountLevel::LOWGM,  // Avoid paying cost (if any) for sex changes.
 		
-		'EditHigherPower'    => 5000,
-		'BanHigherPower'     => 5000
+		'EditHigherPower'    => AccountLevel::NOONE,
+		'BanHigherPower'     => AccountLevel::NOONE
 	)
 );
 ?>

@@ -12,7 +12,7 @@
 		<?php echo $this->dateField('log_before') ?>
 	</p>
 	<p>
-		<label for="ip">IP:</label>
+		<label for="ip">Endereço de IP:</label>
 		<input type="text" name="ip" id="ip" value="<?php echo htmlspecialchars($params->get('ip')) ?>" />
 		...
 		<label for="user">Usuário:</label>
@@ -25,15 +25,15 @@
 		<input type="text" name="rcode" id="rcode" value="<?php echo htmlspecialchars($params->get('rcode')) ?>" />
 		
 		<input type="submit" value="Procurar" />
-		<input type="button" value="Reset" onclick="reload()" />
+		<input type="button" value="Resetar" onclick="reload()" />
 	</p>
 </form>
 <?php if ($logins): ?>
 <?php echo $paginator->infoText() ?>
 <table class="horizontal-table">
 	<tr>
-		<th><?php echo $paginator->sortableColumn('time', 'Data e Hora') ?></th>
-		<th><?php echo $paginator->sortableColumn('ip', 'IP') ?></th>
+		<th><?php echo $paginator->sortableColumn('time', 'Data/Hora') ?></th>
+		<th><?php echo $paginator->sortableColumn('ip', 'Endereço de IP') ?></th>
 		<th><?php echo $paginator->sortableColumn('user', 'Usuário') ?></th>
 		<th><?php echo $paginator->sortableColumn('log', 'Mensagem de Log') ?></th>
 		<th><?php echo $paginator->sortableColumn('rcode', 'Resposta') ?></th>
@@ -41,7 +41,13 @@
 	<?php foreach ($logins as $login): ?>
 	<tr>
 		<td align="right"><?php echo htmlspecialchars($this->formatDateTime($login->time)) ?></td>
-		<td><?php echo htmlspecialchars($login->ip) ?></td>
+		<td>
+			<?php if ($auth->actionAllowed('account', 'index')): ?>
+				<?php echo $this->linkToAccountSearch(array('last_ip' => $login->ip), $login->ip) ?>
+			<?php else: ?>
+				<?php echo htmlspecialchars($login->ip) ?>
+			<?php endif ?>
+		</td>
 		<td>
 			<?php if ($login->account_id && $auth->actionAllowed('account', 'view') && $auth->allowedToViewAccount): ?>
 				<?php echo $this->linkToAccount($login->account_id, $login->user) ?>
@@ -56,5 +62,8 @@
 </table>
 <?php echo $paginator->getHTML() ?>
 <?php else: ?>
-<p>Nenhum log encontrado. <a href="javascript:history.go(-1)">Voltar</a>.</p>
+<p>
+	Nenhum log encontrado.
+	<a href="javascript:history.go(-1)">Voltar</a>.
+</p>
 <?php endif ?>

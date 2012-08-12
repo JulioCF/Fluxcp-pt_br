@@ -18,15 +18,10 @@
 				<td colspan="3"></td>
 				<td id="copyright">
 					<p>
-						<strong>Powered by Flux Control Panel</strong>
-						&mdash; Copyright &copy; 2008-2012 Megasantos.
+						<strong>Powered by brA's Flux Control Panel (<?php echo htmlspecialchars(Flux::VERSION) ?><?php echo Flux::GITHASH ? '.'.Flux::GITHASH : '' ?>)</strong>
+						&mdash; Copyright &copy; 2008-2012, Matthew Harris, Nikunj Mehta, Tradução Megasantos.
 					</p>
 				</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td colspan="3"></td>
-				<td id="copyright"><p><strong>Traduzido por:Megasantos</strong> - Email: jonataandretta@hotmail.com</p></td>
 				<td></td>
 			</tr>
 			<?php endif ?>

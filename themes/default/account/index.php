@@ -64,13 +64,13 @@
 		<input type="text" name="logincount" id="logincount" value="<?php echo htmlspecialchars($params->get('logincount')) ?>" />
 		...
 		<label for="use_birthdate_after"><?php echo htmlspecialchars(Flux::message('BirthdateBetweenLabel')) ?>:</label>
-        <input type="checkbox" name="use_birthdate_after" id="use_birthdate_after"<?php if ($params->get('use_birthdate_after')) echo ' checked="checked"' ?> />	
-    	<?php echo $this->dateField('birthdate_after') ?>
-    	<label for="use_birthdate_before">&mdash;</label>	
-    	<input type="checkbox" name="use_birthdate_before" id="use_birthdate_before"<?php if ($params->get('use_birthdate_before')) echo ' checked="checked"' ?> />
-    	<?php echo $this->dateField('birthdate_before') ?>
-  </p>	
-  <p>
+		<input type="checkbox" name="use_birthdate_after" id="use_birthdate_after"<?php if ($params->get('use_birthdate_after')) echo ' checked="checked"' ?> />
+		<?php echo $this->dateField('birthdate_after') ?>
+		<label for="use_birthdate_before">&mdash;</label>
+		<input type="checkbox" name="use_birthdate_before" id="use_birthdate_before"<?php if ($params->get('use_birthdate_before')) echo ' checked="checked"' ?> />
+		<?php echo $this->dateField('birthdate_before') ?>
+	</p>
+	<p>
 		<label for="use_last_login_after"><?php echo htmlspecialchars(Flux::message('LoginBetweenLabel')) ?>:</label>
 		<input type="checkbox" name="use_last_login_after" id="use_last_login_after"<?php if ($params->get('use_last_login_after')) echo ' checked="checked"' ?> />
 		<?php echo $this->dateField('last_login_after') ?>
@@ -137,7 +137,7 @@
 		<td><?php echo number_format((int)$account->balance) ?></td>
 		<td>
 			<?php if ($account->email): ?>
-				<?php echo htmlspecialchars($account->email) ?>
+				<?php echo $this->linkToAccountSearch(array('email' => $account->email), $account->email) ?>
 			<?php else: ?>
 				<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span>
 			<?php endif ?>
@@ -153,7 +153,7 @@
 		</td>
 		<td>
 			<?php if ($account->last_ip): ?>
-				<?php echo htmlspecialchars($account->last_ip) ?>
+				<?php echo $this->linkToAccountSearch(array('last_ip' => $account->last_ip), $account->last_ip) ?>
 			<?php else: ?>
 				<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span>
 			<?php endif ?>

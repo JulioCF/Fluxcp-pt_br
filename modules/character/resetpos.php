@@ -3,7 +3,7 @@ if (!defined('FLUX_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = 'Resetar Posição';
+$title = 'Reset Position';
 
 $charID = $params->get('id');
 if (!$charID) {

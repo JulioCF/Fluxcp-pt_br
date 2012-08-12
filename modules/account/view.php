@@ -7,9 +7,13 @@ $title = Flux::message('AccountViewTitle');
 
 require_once 'Flux/TemporaryTable.php';
 
-$tableName  = "{$server->charMapDatabase}.items";
-$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
-$tempTable  = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
+if($server->isRenewal) {
+	$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db_re", "{$server->charMapDatabase}.item_db2");
+} else {
+	$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
+}
+$tableName = "{$server->charMapDatabase}.items";
+$tempTable = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
 
 $creditsTable  = Flux::config('FluxTables.CreditsTable');
 $creditColumns = 'credits.balance, credits.last_donation_date, credits.last_donation_amount';
@@ -65,7 +69,7 @@ if (count($_POST) && $account) {
 		if ($canTempBan) {
 			if ($server->loginServer->temporarilyBan($session->account->account_id, $reason, $account->account_id, $tempBanDate)) {
 				$formattedDate = $this->formatDateTime($tempBanDate);
-				$session->setMessageData("Conta banida temporariamente até $formattedDate.");
+				$session->setMessageData("Account has been temporarily banned until $formattedDate.");
 				$this->redirect($this->url('account', 'view', array('id' => $account->account_id)));
 			}
 			else {
@@ -79,7 +83,7 @@ if (count($_POST) && $account) {
 	elseif ($params->get('permban')) {
 		if ($canPermBan) {
 			if ($server->loginServer->permanentlyBan($session->account->account_id, $reason, $account->account_id)) {
-				$session->setMessageData("Conta banida permanentemente.");
+				$session->setMessageData("Account has been permanently banned.");
 				$this->redirect($this->url('account', 'view', array('id' => $account->account_id)));
 			}
 			else {
@@ -147,10 +151,14 @@ foreach ($session->getAthenaServerNames() as $serverName) {
 	$characters[$athena->serverName] = $chars;
 }
 
-$col  = "storage.*, items.name_japanese, items.type";
+$col  = "storage.*, items.name_japanese, items.type, items.slots, c.char_id, c.name AS char_name";
 
 $sql  = "SELECT $col FROM {$server->charMapDatabase}.storage ";
 $sql .= "LEFT JOIN {$server->charMapDatabase}.items ON items.id = storage.nameid ";
+$sql .= "LEFT JOIN {$server->charMapDatabase}.`char` AS c ";
+$sql .= "ON c.char_id = IF(storage.card0 IN (254, 255), ";
+$sql .= "IF(storage.card2 < 0, storage.card2 + 65536, storage.card2) ";
+$sql .= "| (storage.card3 << 16), NULL) ";
 $sql .= "WHERE storage.account_id = ? ";
 
 if (!$auth->allowedToSeeUnknownItems) {
@@ -171,17 +179,27 @@ if ($account) {
 		$cardIDs = array();
 
 		foreach ($items as $item) {
+			$item->cardsOver = -$item->slots;
+			
 			if ($item->card0) {
 				$cardIDs[] = $item->card0;
+				$item->cardsOver++;
 			}
 			if ($item->card1) {
 				$cardIDs[] = $item->card1;
+				$item->cardsOver++;
 			}
 			if ($item->card2) {
 				$cardIDs[] = $item->card2;
+				$item->cardsOver++;
 			}
 			if ($item->card3) {
 				$cardIDs[] = $item->card3;
+				$item->cardsOver++;
+			}
+			
+			if ($item->card0 == 254 || $item->card0 == 255 || $item->card0 == -256 || $item->cardsOver < 0) {
+				$item->cardsOver = 0;
 			}
 		}
 
@@ -199,5 +217,7 @@ if ($account) {
 			}
 		}
 	}
+	
+	$itemAttributes = Flux::config('Attributes')->toArray();
 }
 ?>

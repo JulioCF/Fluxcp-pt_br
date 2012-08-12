@@ -1,7 +1,7 @@
 <?php
 if (!defined('FLUX_ROOT')) exit;
 
-$title = 'Listar Logins';
+$title = 'List Logins';
 
 $sqlpartial = '';
 $bind       = array();

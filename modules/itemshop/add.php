@@ -3,7 +3,7 @@ if (!defined('FLUX_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = 'Adicionar Item a Loja';
+$title = 'Add Item to Shop';
 
 require_once 'Flux/TemporaryTable.php';
 require_once 'Flux/ItemShop.php';
@@ -12,10 +12,15 @@ $itemID = $params->get('id');
 
 $category   = null;
 $categories = Flux::config('ShopCategories')->toArray();
-$tableName  = "{$server->charMapDatabase}.items";
-$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
-$tempTable  = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
-$shopTable  = Flux::config('FluxTables.ItemShopTable');
+
+if($server->isRenewal) {
+	$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db_re", "{$server->charMapDatabase}.item_db2");
+} else {
+	$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
+}
+$tableName = "{$server->charMapDatabase}.items";
+$tempTable = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
+$shopTable = Flux::config('FluxTables.ItemShopTable');
 
 $col = "id AS item_id, name_japanese AS item_name, type";
 $sql = "SELECT $col FROM $tableName WHERE items.id = ?";
@@ -44,25 +49,25 @@ if ($item && count($_POST)) {
 		$errorMessage = 'You must input a credit cost greater than zero.';
 	}
 	elseif ($cost > $maxCost) {
-		$errorMessage = "O custo do item não pode exceder $maxCost.";
+		$errorMessage = "The credit cost must not exceed $maxCost.";
 	}
 	elseif (!$quantity) {
-		$errorMessage = 'Você deve colocar uma quantidade maior que zero.';
+		$errorMessage = 'You must input a quantity greater than zero.';
 	}
 	elseif ($quantity > 1 && !$stackable) {
-		$errorMessage = 'Este item não é acumulável. Quantidade deve ser 1.';
+		$errorMessage = 'This item is not stackable. Quantity must be 1.';
 	}
 	elseif ($quantity > $maxQty) {
-		$errorMessage = "A quantidade máxima não pode exceder $maxQty.";
+		$errorMessage = "The item quantity must not exceed $maxQty.";
 	}
 	elseif (!$info) {
-		$errorMessage = 'Você deve colocar alguma informação sobre o item.';
+		$errorMessage = 'You must input at least some info text.';
 	}
 	else {
 		if ($id=$shop->add($itemID, $category, $cost, $quantity, $info, $useExisting)) {
-			$message = 'Item adicionado com sucesso à loja';
+			$message = 'Item has been successfully added to the shop';
 			if ($image && $image->get('size') && !$shop->uploadShopItemImage($id, $image)) {
-				$message .= ', mas o upload da imagem falhou. Tente novamente modificando o item.';
+				$message .= ', but the image failed to upload. You can re-attempt by modifying.';
 			}
 			else {
 				$message .= '.';
@@ -71,7 +76,7 @@ if ($item && count($_POST)) {
 			$this->redirect($this->url('purchase'));	
 		}
 		else {
-			$errorMessage = 'Falha ao adicionar o item à loja.';
+			$errorMessage = 'Failed to add the item to the shop.';
 		}
 	}
 }

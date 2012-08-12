@@ -12,7 +12,7 @@
 		<?php echo $this->dateField('login_before') ?>
 		<?php if ($auth->allowedToSearchCpLoginLogPw): ?>
 		...
-		<label for="password">Password:</label>
+		<label for="password">Senha:</label>
 		<input type="text" name="password" id="password" value="<?php echo htmlspecialchars($params->get('password')) ?>" />
 		<?php endif ?>
 	</p>
@@ -23,20 +23,20 @@
 		<label for="username">Usuário:</label>
 		<input type="text" name="username" id="username" value="<?php echo htmlspecialchars($params->get('username')) ?>" />
 		...
-		<label for="ip">IP:</label>
+		<label for="ip">Endereço de IP:</label>
 		<input type="text" name="ip" id="ip" value="<?php echo htmlspecialchars($params->get('ip')) ?>" />
 		...
 		<label for="error_code">Código de Erro:</label>
 		<select name="error_code" id="error_code">
-			<option value="all"<?php if (is_null($params->get('error_code')) || strtolower($params->get('error_code') == 'all')) echo ' selected="selected"' ?>>All</option>
-			<option value="none"<?php if (strtolower($params->get('error_code')) == 'none') echo ' selected="selected"' ?>>None</option>
+			<option value="all"<?php if (is_null($params->get('error_code')) || strtolower($params->get('error_code') == 'all')) echo ' selected="selected"' ?>>Todos</option>
+			<option value="none"<?php if (strtolower($params->get('error_code')) == 'none') echo ' selected="selected"' ?>>Nenhum</option>
 		<?php foreach ($loginErrors->toArray() as $errorCode => $errorType): ?>
 			<option value="<?php echo $errorCode ?>"<?php if (ctype_digit($params->get('error_code')) && $params->get('error_code') == $errorCode) echo ' selected="selected"' ?>><?php echo htmlspecialchars($errorType) ?></option>
 		<?php endforeach ?>
 		</select>
 		
 		<input type="submit" value="Procurar" />
-		<input type="button" value="Reset" onclick="reload()" />
+		<input type="button" value="Resetar" onclick="reload()" />
 	</p>
 </form>
 <?php if ($logins): ?>
@@ -48,7 +48,7 @@
 		<?php if (($showPassword=Flux::config('CpLoginLogShowPassword')) && ($seePassword=$auth->allowedToSeeCpLoginLogPass)): ?>
 		<th><?php echo $paginator->sortableColumn('password', 'Senha') ?></th>
 		<?php endif ?>
-		<th><?php echo $paginator->sortableColumn('ip', 'IP') ?></th>
+		<th><?php echo $paginator->sortableColumn('ip', 'Endereço de IP') ?></th>
 		<th><?php echo $paginator->sortableColumn('login_date', 'Data do Login') ?></th>
 		<th><?php echo $paginator->sortableColumn('error_code', 'Código de Erro') ?></th>
 	</tr>
@@ -65,7 +65,13 @@
 		<?php if ($showPassword && $seePassword): ?>
 		<td><?php echo htmlspecialchars($login->password) ?></td>
 		<?php endif ?>
-		<td><?php echo htmlspecialchars($login->ip) ?></td>
+		<td>
+			<?php if ($auth->actionAllowed('account', 'index')): ?>
+				<?php echo $this->linkToAccountSearch(array('last_ip' => $login->ip), $login->ip) ?>
+			<?php else: ?>
+				<?php echo htmlspecialchars($login->ip) ?>
+			<?php endif ?>
+		</td>
 		<td><?php echo $this->formatDateTime($login->login_date) ?></td>
 		<td>
 			<?php if (!is_null($login->error_code)): ?>
@@ -79,5 +85,5 @@
 </table>
 <?php echo $paginator->getHTML() ?>
 <?php else: ?>
-<p>Nenhum log encontrado. <a href="javascript:history.go(-1)">Voltar</a>.</p>
+<p>Nenhum log encontrado. <a href="javascript:history.go(-1)">Go back</a>.</p>
 <?php endif ?>

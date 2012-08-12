@@ -14,7 +14,7 @@ $shopItemID = $params->get('id');
 $deleted    = $shopItemID ? $shop->delete($shopItemID) : false;
 
 if ($deleted) {
-	$session->setMessageData('Item deletado com sucesso da loja..');
+	$session->setMessageData('Item successfully deleted from the item shop.');
 	$this->redirect($this->url('purchase'));
 }
 ?>

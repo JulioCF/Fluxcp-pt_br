@@ -1,4 +1,4 @@
-﻿<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('FLUX_ROOT')) exit; ?>
 <h2><?php echo htmlspecialchars(Flux::message('ZenyLogHeading')) ?></h2>
 <?php if ($logs): ?>
 <?php echo $paginator->infoText() ?>

@@ -1,4 +1,4 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
-<h2>Logs do eAthena</h2>
-<p>Você pode ver os Logs do eAthena aqui.</p>
-<p>Por favor, escolha o log que você deseja ver a partir do menu acima.</p>
+<h2>rA Logs</h2>
+<p>You may view the rAthena logs here.</p>
+<p>Please select the log that you would like to view from the available menus.</p>

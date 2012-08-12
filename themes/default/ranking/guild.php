@@ -29,6 +29,7 @@
 				<?php endif ?>
 			</strong></td>
 			<td><?php echo number_format($guilds[$i]->guild_lv) ?></td>
+			<td><?php echo number_format($guilds[$i]->castles) ?></td>
 			<td><?php echo number_format($guilds[$i]->members) ?></td>
 			<td><?php echo number_format($guilds[$i]->average_lv) ?></td>
 			<td><?php echo number_format($guilds[$i]->exp) ?></td>

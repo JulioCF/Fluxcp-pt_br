@@ -1,8 +1,8 @@
 <?php
 if (version_compare(PHP_VERSION, '5.2.1', '<')) {
-	echo '<h2>Erro</h2>';
-	echo '<p>A versão do PHP 5.2.1 ou maior é necessária para usar o Painel de Controle Flux.</p>';
-	echo '<p>Você está usando a versão '.PHP_VERSION.'</p>';
+	echo '<h2>Error</h2>';
+	echo '<p>PHP 5.2.1 or higher is required to use Flux Control Panel.</p>';
+	echo '<p>You are running '.PHP_VERSION.'</p>';
 	exit;
 }
 
@@ -39,7 +39,7 @@ if (ini_get('magic_quotes_gpc')) {
 
 set_include_path(FLUX_LIB_DIR.PATH_SEPARATOR.get_include_path());
 
-// Default account levels.
+// Default account levels.	  	
 require_once FLUX_CONFIG_DIR.'/levels.php';
 
 // Some necessary Flux core libraries.
@@ -56,10 +56,10 @@ require_once 'markdown/markdown.php';
 
 try {
 	if (!extension_loaded('pdo')) {
-		throw new Flux_Error('A extensão PDO é necessária para usar o Flux, tenha certeza que você tem instalado junto com o driver PDO_MYSQL.');
+		throw new Flux_Error('The PDO extension is required to use Flux, please make sure it is installed along with the PDO_MYSQL driver.');
 	}
 	elseif (!extension_loaded('pdo_mysql')) {
-		throw new Flux_Error('O driver PDO_MYSQL para a extensão PDF deve ser instalada para se usar o Flux. Por favor, constule o manual PHP para instruções de instalação.');
+		throw new Flux_Error('The PDO_MYSQL driver for the PDO extension must be installed to use Flux.  Please consult the PHP manual for installation instructions.');
 	}
 
 	// Initialize Flux.
@@ -75,7 +75,7 @@ try {
 	// Set default timezone for entire app.
 	$timezone = Flux::config('DateDefaultTimezone');
 	if ($timezone && !@date_default_timezone_set($timezone)) {
-		throw new Flux_Error("'$timezone' não é uma timezone válida.  Consulte http://php.net/timezones para uma lista de timezones válidos.");
+		throw new Flux_Error("'$timezone' is not a valid timezone.  Consult http://php.net/timezones for a list of valid timezones.");
 	}
 
 	// Create some basic directories.
@@ -97,42 +97,50 @@ try {
 		$directories[] = FLUX_DATA_DIR."/logs/schemas/logindb/$serverName";
 		$directories[] = FLUX_DATA_DIR."/logs/schemas/charmapdb/$serverName";
 
-		foreach ($loginAthenaGroup->athenaServers as $athenaServer) {
+		foreach ($loginAthenaGroup->athenaServers as $athenaServer)
 			$directories[] = FLUX_DATA_DIR."/logs/schemas/charmapdb/$serverName/{$athenaServer->serverName}";
-		}
 	}
 
 	foreach ($directories as $directory) {
 		if (is_writable(dirname($directory)) && !is_dir($directory)) {
-			mkdir($directory, 0777);
+			if (Flux::config('RequireOwnership'))
+				mkdir($directory, 0700);
+			else
+				mkdir($directory, 0777);
 		}
 	}
+	
+	if (Flux::config('RequireOwnership') && function_exists('posix_getuid'))
+		$uid = posix_getuid();
+	
+	$directories = array(
+		FLUX_DATA_DIR.'/logs'     => 'log storage',
+		FLUX_DATA_DIR.'/itemshop' => 'item shop image',
+		FLUX_DATA_DIR.'/tmp'      => 'temporary'
+	);
+	
+	foreach ($directories as $directory => $directoryFunction) {
+		$directory = realpath($directory);
+		if (!is_writable($directory))
+			throw new Flux_PermissionError("The $directoryFunction directory '$directory' is not writable.  Remedy with `chmod 0600 $directory`");
+		if (Flux::config('RequireOwnership') && function_exists('posix_getuid') && fileowner($directory) != $uid)
+			throw new Flux_PermissionError("The $directoryFunction directory '$directory' is not owned by the executing user.  Remedy with `chown -R ".posix_geteuid().":".posix_geteuid()." $directory`");
+	}
+	
+	if (ini_get('session.use_trans_sid'))
+		throw new Flux_Error("The 'session.use_trans_sid' php.ini configuration must be turned off for Flux to work.");
 
 	// Installer library.
 	$installer = Flux_Installer::getInstance();
-	if ($hasUpdates=$installer->updateNeeded()) {
+	if ($hasUpdates=$installer->updateNeeded())
 		Flux::config('ThemeName', 'installer');
-	}
 
 	$sessionKey = Flux::config('SessionKey');
-	if (!is_writable($dir=realpath(FLUX_DATA_DIR.'/logs'))) {
-		throw new Flux_PermissionError("A pasta de log '$dir' não possui permissão de escrita. Você pode resovler isso com `chmod 0600 $dir`");
-	}
-	elseif (!is_writable($dir=realpath(FLUX_DATA_DIR.'/itemshop'))) {
-		throw new Flux_PermissionError("A pasta da loja de itens '$dir' não possui permissão de escrita. Você pode resovler isso com `chmod 0600 $dir`");
-	}
-	elseif (!is_writable($dir=realpath(FLUX_DATA_DIR.'/tmp'))) {
-		throw new Flux_PermissionError("A pasta temporária '$dir' não possui permissão de escrita.  Você pode resovler isso com `chmod 0600 $dir`");
-	}
-	elseif (ini_get('session.use_trans_sid')) {
-		throw new Flux_Error("A configuração 'session.use_trans_sid' no php.ini deve ser desligada para o Flux poder funcionar.");
-	}
-	else {
-		$sessionExpireDuration = Flux::config('SessionCookieExpire') * 60 * 60;
-		session_set_cookie_params($sessionExpireDuration, Flux::config('BaseURI'));
-		ini_set('session.name', $sessionKey);
-		session_start();
-	}
+	$sessionExpireDuration = Flux::config('SessionCookieExpire') * 60 * 60;
+	session_set_cookie_params($sessionExpireDuration, Flux::config('BaseURI'));
+	ini_set('session.gc_maxlifetime', $sessionExpireDuration);
+	ini_set('session.name', $sessionKey);
+	@session_start();
 
 	if (empty($_SESSION[$sessionKey]) || !is_array($_SESSION[$sessionKey])) {
 		$_SESSION[$sessionKey] = array();
