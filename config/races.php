@@ -1,16 +1,16 @@
 <?php
 // rA monster races.
 return array(
-	 0 => 'Formless',
-	 1 => 'Undead',
-	 2 => 'Brute',
-	 3 => 'Plant',
-	 4 => 'Insect',
-	 5 => 'Fish',
-	 6 => 'Demon',
-	 7 => 'Demi-Human',
-	 8 => 'Angel',
-	 9 => 'Dragon',
+	 0 => 'Amorfo',
+	 1 => 'Morto-Vivo',
+	 2 => 'Bruto',
+	 3 => 'Planta',
+	 4 => 'Inseto',
+	 5 => 'Peixe',
+	 6 => 'Demônio',
+	 7 => 'Humanóide',
+	 8 => 'Anjo',
+	 9 => 'Dragão',
 	//10 => 'Boss',
 	//11 => 'Non-Boss',
 	//12 => 'Non-Demi-Human'

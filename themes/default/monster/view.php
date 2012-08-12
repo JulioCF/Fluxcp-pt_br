@@ -1,5 +1,5 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
-<h2>Viewing Monster</h2>
+<h2>Ver Monstros</h2>
 <?php if ($monster): ?>
 <h3>
 	#<?php echo $monster->monster_id ?>: <?php echo htmlspecialchars($monster->iro_name) ?>
@@ -9,7 +9,7 @@
 </h3>
 <table class="vertical-table">
 	<tr>
-		<th>Monster ID</th>
+		<th>ID do Monstro</th>
 		<td><?php echo $monster->monster_id ?></td>
 		<?php if ($image=$this->monsterImage($monster->monster_id)): ?>
 		<td rowspan="12" style="width:150px; text-align: center; vertical-alignment: middle">
@@ -20,91 +20,91 @@
 		<td><?php echo htmlspecialchars($monster->sprite) ?></td>
 	</tr>
 	<tr>
-		<th>kRO Name</th>
+		<th>Nome no kRO</th>
 		<td><?php echo htmlspecialchars($monster->kro_name) ?></td>
 		<th>Custom</th>
 		<td>
 			<?php if (preg_match('/mob_db2$/', $monster->origin_table)): ?>
-				Yes
+				Sim
 			<?php else: ?>
-				No
+				Não
 			<?php endif ?>
 		</td>
 	</tr>
 	<tr>
-		<th>iRO Name</th>
+		<th>Nome no iRO</th>
 		<td><?php echo htmlspecialchars($monster->iro_name) ?></td>
 		<th>HP</th>
 		<td><?php echo number_format($monster->hp) ?></td>
 	</tr>
 	<tr>
-		<th>Size</th>
+		<th>Tamanho</th>
 		<td>
 			<?php if ($size=Flux::monsterSizeName($monster->size)): ?>
 				<?php echo htmlspecialchars($size) ?>
 			<?php else: ?>
-				<span class="not-applicable">Unknown</span>
+				<span class="not-applicable">Desconhecido</span>
 			<?php endif ?>
 		</td>
 		<th>SP</th>
 		<td><?php echo number_format($monster->sp) ?></td>
 	</tr>
 	<tr>
-		<th>Race</th>
+		<th>Raça</th>
 		<td>
 			<?php if ($race=Flux::monsterRaceName($monster->race)): ?>
 				<?php echo htmlspecialchars($race) ?>
 			<?php else: ?>
-				<span class="not-applicable">Unknown</span>
+				<span class="not-applicable">Desconhecido</span>
 			<?php endif ?>	
 		</td>
 		<th>Level</th>
 		<td><?php echo number_format($monster->level) ?></td>
 	</tr>
 	<tr>
-		<th>Element</th>
+		<th>Elemento</th>
 		<td><?php echo Flux::elementName($monster->element_type) ?> (Lv <?php echo floor($monster->element_level) ?>)</td>
-		<th>Speed</th>
+		<th>Velocidade</th>
 		<td><?php echo number_format($monster->speed) ?></td>
 	</tr>
 	<tr>
-		<th>Experience</th>
+		<th>Experiência</th>
 		<td><?php echo number_format($monster->base_exp*$server->baseExpRates) ?></td>
-		<th>Attack</th>
+		<th>Ataque</th>
 		<td><?php echo number_format($monster->attack1) ?>~<?php echo number_format($monster->attack2) ?></td>
 	</tr>
 	<tr>
-		<th>Job Experience</th>
+		<th>Experiência de Job</th>
 		<td><?php echo number_format($monster->job_exp*$server->jobExpRates) ?></td>
-		<th>Defense</th>
+		<th>Defesa</th>
 		<td><?php echo number_format($monster->defense) ?></td>
 	</tr>
 	<tr>
-		<th>MVP Experience</th>
+		<th>Experiência de MVP</th>
 		<td><?php echo number_format($monster->mvp_exp*$server->mvpExpRates) ?></td>
-		<th>Magic Defense</th>
+		<th>Defesa Mágica</th>
 		<td><?php echo number_format($monster->magic_defense) ?></td>
 	</tr>
 	<tr>
-		<th>Attack Delay</th>
+		<th>Delay do Ataque</th>
 		<td><?php echo number_format($monster->attack_delay) ?> ms</td>
-		<th>Attack Range</th>
+		<th>Alcance do Ataque</th>
 		<td><?php echo number_format($monster->range1) ?></td>
 	</tr>
 	<tr>
-		<th>Attack Motion</th>
+		<th>Movimento de ataque</th>
 		<td><?php echo number_format($monster->attack_motion) ?> ms</td>
-		<th>Spell Range</th>
+		<th>Alcance da Magia</th>
 		<td><?php echo number_format($monster->range2) ?></td>
 	</tr>
 	<tr>
-		<th>Delay Motion</th>
+		<th>Movimento de atraso</th>
 		<td><?php echo number_format($monster->defense_motion) ?> ms</td>
-		<th>Vision Range</th>
+		<th>Alcance de Visão</th>
 		<td><?php echo number_format($monster->range3) ?></td>
 	</tr>
 	<tr>
-		<th>Monster Mode</th>
+		<th>Modo do Monstro</th>
 		<td colspan="<?php echo $image ? 4 : 3 ?>">
 			<ul class="monster-mode">
 			<?php foreach ($this->monsterMode($monster->mode) as $mode): ?>
@@ -114,7 +114,7 @@
 		</td>
 	</tr>
 	<tr>
-		<th>Monster Stats</th>
+		<th>Status do Monstro</th>
 		<td colspan="<?php echo $image ? 4 : 3 ?>">
 			<table class="character-stats">
 				<tr>
@@ -138,13 +138,13 @@
 	</tr>
 </table>
 
-<h3><?php echo htmlspecialchars($monster->iro_name) ?> Item Drops</h3>
+<h3><?php echo htmlspecialchars($monster->iro_name) ?> Drop de itens</h3>
 <?php if ($itemDrops): ?>
 <table class="vertical-table">
 	<tr>
-		<th>Item ID</th>
-		<th colspan="2">Item Name</th>
-		<th>Drop Chance</th>
+		<th>ID do item</th>
+		<th colspan="2">Nome do item</th>
+		<th>Chance de Drop </th>
 	</tr>
 	<?php $mvpDrops = 0; ?>
 	<?php foreach ($itemDrops as $itemDrop): ?>
@@ -181,29 +181,29 @@
 	<?php if ($mvpDrops > 1): ?>
 	<tr>
 		<td colspan="4" align="center">
-			<p><em>Note: Only <strong>one</strong> MVP drop will be rewarded.</em></p>
+			<p><em>Nota: Apenas<strong>one</strong> drop de MVP será recompensado.</em></p>
 		</td>
 	</tr>
 	<?php endif ?>
 </table>
 <?php else: ?>
-<p>No item drops found for <?php echo htmlspecialchars($monster->iro_name) ?>.</p>
+<p>Não cai de item encontrado para <?php echo htmlspecialchars($monster->iro_name) ?>.</p>
 <?php endif ?>
 
-<h3>Monster Skills for “<?php echo htmlspecialchars($monster->iro_name) ?>”</h3>
+<h3>Habilidades do monstro para “<?php echo htmlspecialchars($monster->iro_name) ?>”</h3>
 <?php if ($mobSkills): ?>
 <table class="vertical-table">
 	<tr>
-		<th>Name</th>
+		<th>Nome</th>
 		<th>Level</th>
-		<th>State</th>
-		<th>Rate</th>
+		<th>Status</th>
+		<th>Chance</th>
 		<th>Cast Time</th>
 		<th>Delay</th>
-		<th>Cancelable</th>
-		<th>Target</th>
-		<th>Condition</th>
-		<th>Value</th>
+		<th>Cancelável</th>
+		<th>Alvo</th>
+		<th>Condição</th>
+		<th>Valor</th>
 	</tr>	
 	<?php foreach ($mobSkills as $skill): ?>
 	<tr>
@@ -220,15 +220,15 @@
 			<?php if (!is_null($skill->CONDITION_VALUE) && trim($skill->CONDITION_VALUE) !== ''): ?>
 				<?php echo htmlspecialchars($skill->CONDITION_VALUE) ?>
 			<?php else: ?>
-				<span class="not-applicable">None</span>
+				<span class="not-applicable">Nada</span>
 			<?php endif ?>
 		</td>
 	</tr>
 	<?php endforeach ?>
 </table>
 <?php else: ?>
-<p>No skills found for <?php echo htmlspecialchars($monster->iro_name) ?>.</p>
+<p>Nenhuma skill encontrada para <?php echo htmlspecialchars($monster->iro_name) ?>.</p>
 <?php endif ?>
 <?php else: ?>
-<p>No such monster was found. <a href="javascript:history.go(-1)">Go back</a>.</p>
+<p>Nenhum monstro encontrado. <a href="javascript:history.go(-1)">Voltar</a>.</p>
 <?php endif ?>

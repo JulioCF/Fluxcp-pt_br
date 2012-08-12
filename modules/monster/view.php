@@ -1,7 +1,7 @@
 <?php
 if (!defined('FLUX_ROOT')) exit;
 
-$title = 'Viewing Monster';
+$title = 'Vendo Monstros';
 $mobID = $params->get('id');
 
 require_once 'Flux/TemporaryTable.php';
